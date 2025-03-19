@@ -1,14 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from './CalculatorInput';
 import CalculatorResults from './CalculatorResults';
 import { toast } from '@/components/ui/use-toast';
+import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
+import LeadForm from './LeadForm';
 
 const Calculator = () => {
   const [patrimony, setPatrimony] = useState<string>('');
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showLeadForm, setShowLeadForm] = useState<boolean>(false);
+  const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
   // Taxas CDI (em %)
   const currentCDIRate = 13.15;
@@ -21,7 +24,27 @@ const Calculator = () => {
     setHasCalculated(false);
   };
 
-  // Calculate results
+  // Handle lead form success
+  const handleLeadFormSuccess = () => {
+    setShowLeadForm(false);
+    setLeadCaptured(true);
+    
+    // Calculate after lead is captured
+    calculateResults();
+  };
+
+  // Calculate results after lead capture
+  const calculateResults = () => {
+    setIsLoading(true);
+    
+    // Simulando um breve carregamento para mostrar a animação
+    setTimeout(() => {
+      setHasCalculated(true);
+      setIsLoading(false);
+    }, 600);
+  };
+
+  // Calculate button handler - show lead form if not captured
   const handleCalculate = () => {
     if (!patrimony || parseInt(patrimony) === 0) {
       toast({
@@ -32,13 +55,13 @@ const Calculator = () => {
       return;
     }
 
-    setIsLoading(true);
-    
-    // Simulando um breve carregamento para mostrar a animação
-    setTimeout(() => {
-      setHasCalculated(true);
-      setIsLoading(false);
-    }, 600);
+    if (leadCaptured) {
+      // Already captured lead, calculate directly
+      calculateResults();
+    } else {
+      // Show lead form
+      setShowLeadForm(true);
+    }
   };
 
   // Calculate monthly income based on CDI rate
@@ -213,6 +236,13 @@ const Calculator = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={showLeadForm} onOpenChange={setShowLeadForm}>
+        <DialogContent className="sm:max-w-md">
+          <LeadForm onSuccess={handleLeadFormSuccess} />
+          <DialogClose className="hidden" />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

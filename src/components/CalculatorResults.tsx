@@ -38,6 +38,25 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
     return value.toFixed(2).replace('.', ',') + '%';
   };
 
+  // Prepare data for the chart
+  const chartData = [
+    { 
+      name: 'CDI Atual', 
+      value: currentCDI.netMonthly, 
+      color: '#4f46e5' 
+    },
+    { 
+      name: 'CDI Últimos 12m', 
+      value: pastCDI.netMonthly, 
+      color: '#60a5fa' 
+    },
+    { 
+      name: 'CDI Futuro 12m', 
+      value: futureCDI.netMonthly, 
+      color: '#10b981' 
+    }
+  ];
+
   return (
     <div className="mt-8 animate-fade-up">
       <div className="calculator-result-box mb-6">
@@ -50,11 +69,7 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
         </div>
       </div>
 
-      <ResultChart 
-        currentCDI={currentCDI.netMonthly} 
-        pastCDI={pastCDI.netMonthly} 
-        futureCDI={futureCDI.netMonthly} 
-      />
+      <ResultChart data={chartData} />
 
       <div className="grid grid-cols-3 gap-4 mt-8">
         <div className="text-center p-4 bg-calculator-gray rounded-md animate-scale-in" style={{animationDelay: '0.1s'}}>

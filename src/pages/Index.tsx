@@ -1,19 +1,12 @@
 
 import React, { useState } from 'react';
 import Calculator from '@/components/Calculator';
-import LeadForm from '@/components/LeadForm';
 
 const Index = () => {
   const [showCalculator, setShowCalculator] = useState(false);
-  const [showLeadForm, setShowLeadForm] = useState(false);
-
-  const handleLeadFormSuccess = () => {
-    setShowLeadForm(false);
-    setShowCalculator(true);
-  };
 
   const handleCalculateClick = () => {
-    setShowLeadForm(true);
+    setShowCalculator(true);
   };
 
   return (
@@ -29,7 +22,7 @@ const Index = () => {
       
       <main className="container mx-auto py-8">
         <div className="max-w-3xl mx-auto">
-          {!showLeadForm && !showCalculator ? (
+          {!showCalculator ? (
             <div className="text-center">
               <h2 className="text-2xl font-bold text-calculator-gray-dark mb-6">
                 Calculadora Exclusiva de Rentabilidade
@@ -44,8 +37,6 @@ const Index = () => {
                 Acessar Calculadora
               </button>
             </div>
-          ) : showLeadForm ? (
-            <LeadForm onSuccess={handleLeadFormSuccess} />
           ) : (
             <Calculator />
           )}

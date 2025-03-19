@@ -59,13 +59,12 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 animate-fade-up">
+    <div className="py-4">
       <h2 className="text-2xl font-bold text-calculator-gray-dark mb-6">
         Calculadora Exclusiva de Rentabilidade
       </h2>
       <p className="text-calculator-gray mb-6">
-        Preencha seus dados para ter acesso à nossa calculadora exclusiva 
-        e descubra o potencial de rendimento do seu patrimônio.
+        Preencha seus dados para calcular o potencial de rendimento do seu patrimônio.
       </p>
 
       <Form {...form}>
@@ -112,13 +111,13 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSuccess }) => {
             )}
           />
 
-          <div className="pt-2">
+          <div className="pt-4">
             <Button 
               type="submit" 
               className="w-full bg-calculator-blue hover:bg-calculator-blue/90"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Processando...' : 'Acessar Calculadora'}
+              {isSubmitting ? 'Processando...' : 'Calcular Agora'}
             </Button>
           </div>
         </form>
