@@ -1,88 +1,82 @@
 
-import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import React from 'react';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  Cell 
+} from 'recharts';
 
-interface ResultChartProps {
-  currentCDI: number;
-  pastCDI: number;
-  futureCDI: number;
+// Definição de tipos para os dados do gráfico
+interface ChartDataItem {
+  name: string;
+  value: number;
+  color: string;
 }
 
-const ResultChart: React.FC<ResultChartProps> = ({ currentCDI, pastCDI, futureCDI }) => {
-  const [animationFinished, setAnimationFinished] = useState(false);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationFinished(true);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, []);
+// Definição de tipos para as propriedades do componente
+interface ResultChartProps {
+  data: ChartDataItem[];
+}
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(value);
-  };
+// Formatador para os valores no eixo Y (em reais)
+const formatCurrency = (value: number) => {
+  return value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+  });
+};
 
-  const data = [
-    {
-      name: 'CDI',
-      value: currentCDI,
-      color: '#F9D56E'
-    },
-    {
-      name: 'CDI ULT',
-      value: pastCDI,
-      color: '#F8C555'
-    },
-    {
-      name: 'CDI FUT',
-      value: futureCDI,
-      color: '#8BD49C'
-    }
-  ];
+// Componente de tooltip personalizado
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
+        <p className="font-semibold">{label}</p>
+        <p className="text-calculator-blue font-bold">
+          {formatCurrency(payload[0].value)}
+        </p>
+        <p className="text-xs text-gray-500">Renda mensal</p>
+      </div>
+    );
+  }
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 shadow-lg rounded-md border border-gray-100">
-          <p className="text-sm text-gray-600">{payload[0].payload.name}</p>
-          <p className="font-semibold text-calculator-gray-dark">
-            {formatCurrency(payload[0].value)}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  return null;
+};
 
+const ResultChart: React.FC<ResultChartProps> = ({ data }) => {
   return (
-    <div className="chart-container">
+    <div className="w-full h-[300px] mt-4 animate-fade-up">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
-          barSize={60}
-          animationDuration={1000}
-          animationBegin={200}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 20,
+          }}
+          barSize={40}
         >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f5" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis 
             dataKey="name" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#414B5A', fontSize: 12 }}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#64748b', fontSize: 12 }}
           />
           <YAxis 
-            tickFormatter={formatCurrency} 
-            axisLine={false} 
+            tickFormatter={formatCurrency}
+            axisLine={false}
             tickLine={false}
-            tick={{ fill: '#8A8D96', fontSize: 12 }}
-            width={80}
+            tick={{ fill: '#64748b', fontSize: 12 }}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+          <Tooltip content={<CustomTooltip />} />
           <Bar 
             dataKey="value" 
             radius={[4, 4, 0, 0]}

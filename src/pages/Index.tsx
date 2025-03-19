@@ -1,8 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Calculator from '@/components/Calculator';
+import LeadForm from '@/components/LeadForm';
 
 const Index = () => {
+  const [showCalculator, setShowCalculator] = useState(false);
+
+  const handleLeadFormSuccess = () => {
+    setShowCalculator(true);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-gray-100 py-4">
@@ -15,7 +22,13 @@ const Index = () => {
       </header>
       
       <main className="container mx-auto py-8">
-        <Calculator />
+        <div className="max-w-3xl mx-auto">
+          {!showCalculator ? (
+            <LeadForm onSuccess={handleLeadFormSuccess} />
+          ) : (
+            <Calculator />
+          )}
+        </div>
       </main>
       
       <footer className="mt-16 py-6 border-t border-gray-100 text-center text-gray-500 text-sm">
