@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 210 100% 40%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -35,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +92,85 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-['Inter',sans-serif];
   }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+.calculator-input {
+  @apply relative w-full;
+}
+
+.calculator-input::before {
+  content: "R$";
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-gray-500;
+}
+
+.calculator-input input {
+  @apply pl-10 pr-4 py-3 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-calculator-blue focus:border-transparent transition-all duration-200;
+}
+
+.calculator-rate-box {
+  @apply bg-calculator-blue-light rounded-md p-4 mb-4 relative overflow-hidden transition-all duration-300 hover:shadow-md;
+}
+
+.calculator-rate-box .icon {
+  @apply bg-calculator-blue text-white p-2 rounded-md absolute left-4 top-1/2 -translate-y-1/2;
+}
+
+.calculator-rate-box .rate {
+  @apply text-calculator-blue-dark font-semibold text-lg pl-14;
+}
+
+.calculator-rate-box .info-icon {
+  @apply absolute right-4 top-1/2 -translate-y-1/2 text-calculator-blue cursor-pointer;
+}
+
+.calculator-rate-box .month-box {
+  @apply bg-calculator-gray rounded-md p-3 text-center;
+}
+
+.calculator-rate-box .month-box .value {
+  @apply text-calculator-gray-dark font-semibold;
+}
+
+.calculator-rate-box .month-box .label {
+  @apply text-gray-500 text-sm;
+}
+
+.calculator-button {
+  @apply py-3 px-6 rounded-md text-base font-medium transition-all duration-200;
+}
+
+.calculator-button.primary {
+  @apply bg-calculator-blue text-white hover:bg-calculator-blue-dark;
+}
+
+.calculator-button.secondary {
+  @apply bg-calculator-gray text-calculator-gray-dark hover:bg-gray-300;
+}
+
+.calculator-result-box {
+  @apply bg-calculator-blue-light rounded-md p-6 flex justify-between items-center animate-fade-up;
+}
+
+.calculator-result-box .label {
+  @apply text-gray-700 text-sm;
+}
+
+.calculator-result-box .value {
+  @apply text-calculator-blue-dark font-bold text-2xl;
+}
+
+.chart-container {
+  @apply mt-6 h-64 w-full animate-fade-in;
 }
