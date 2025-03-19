@@ -5,9 +5,15 @@ import LeadForm from '@/components/LeadForm';
 
 const Index = () => {
   const [showCalculator, setShowCalculator] = useState(false);
+  const [showLeadForm, setShowLeadForm] = useState(false);
 
   const handleLeadFormSuccess = () => {
+    setShowLeadForm(false);
     setShowCalculator(true);
+  };
+
+  const handleCalculateClick = () => {
+    setShowLeadForm(true);
   };
 
   return (
@@ -23,7 +29,22 @@ const Index = () => {
       
       <main className="container mx-auto py-8">
         <div className="max-w-3xl mx-auto">
-          {!showCalculator ? (
+          {!showLeadForm && !showCalculator ? (
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-calculator-gray-dark mb-6">
+                Calculadora Exclusiva de Rentabilidade
+              </h2>
+              <p className="text-calculator-gray mb-8">
+                Descubra o potencial de rendimento do seu patrimônio com nossa calculadora exclusiva.
+              </p>
+              <button 
+                onClick={handleCalculateClick}
+                className="bg-calculator-blue hover:bg-calculator-blue/90 text-white px-6 py-3 rounded-md font-medium"
+              >
+                Acessar Calculadora
+              </button>
+            </div>
+          ) : showLeadForm ? (
             <LeadForm onSuccess={handleLeadFormSuccess} />
           ) : (
             <Calculator />
