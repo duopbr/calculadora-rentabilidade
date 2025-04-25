@@ -7,8 +7,12 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <header className="border-b border-gray-100 py-4">
         <div className="container mx-auto px-4 flex items-center">
-          <div className="w-10 h-10 bg-calculator-blue rounded-full flex items-center justify-center text-white font-bold">
-            D
+          <div className="w-10 h-10 bg-[#1CA2FC] rounded-full flex items-center justify-center text-white font-bold">
+            <img 
+              src="/lovable-uploads/81cabb12-e425-469b-be89-7110bca0ebfb.png" 
+              alt="Duop Logo" 
+              className="w-8 h-8"
+            />
           </div>
           <h1 className="ml-2 text-xl font-bold text-calculator-gray-dark">Duop</h1>
         </div>
@@ -30,3 +34,4 @@ const Index = () => {
 };
 
 export default Index;
+
