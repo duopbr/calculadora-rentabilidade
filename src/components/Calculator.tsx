@@ -5,6 +5,7 @@ import CalculatorResults from './CalculatorResults';
 import { toast } from '@/components/ui/use-toast';
 import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
 import LeadForm from './LeadForm';
+import { Input } from '@/components/ui/input';
 
 const Calculator = () => {
   const [patrimony, setPatrimony] = useState<string>('');
@@ -13,15 +14,27 @@ const Calculator = () => {
   const [showLeadForm, setShowLeadForm] = useState<boolean>(false);
   const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
-  // Taxas CDI (em %)
-  const currentCDIRate = 14.15;
-  const pastCDIRate = 10.93;
-  const futureCDIRate = 14.86;
+  // CDI Rates with default values
+  const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.15);
+  const [pastCDIRate, setPastCDIRate] = useState<number>(10.93);
+  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.86);
+
+  // Handle CDI rate changes
+  const handleCDIChange = (value: string, setter: (value: number) => void) => {
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setter(numericValue);
+    }
+  };
 
   // Reset calculator
   const handleClear = () => {
     setPatrimony('');
     setHasCalculated(false);
+    // Reset CDI rates to default values
+    setCurrentCDIRate(14.15);
+    setPastCDIRate(10.93);
+    setFutureCDIRate(14.86);
   };
 
   // Handle lead form success
@@ -107,8 +120,15 @@ const Calculator = () => {
                 <CalculatorIcon size={20} />
               </div>
               <h3 className="text-sm text-gray-600 mb-2">CDI Atual</h3>
-              <div className="rate">
-                {currentCDIRate.toFixed(2).replace('.', ',')}%
+              <div className="rate flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={currentCDIRate}
+                  onChange={(e) => handleCDIChange(e.target.value, setCurrentCDIRate)}
+                  className="w-24 text-lg font-semibold"
+                  step="0.01"
+                />
+                <span className="text-lg font-semibold">%</span>
               </div>
               <div className="info-icon">
                 <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
@@ -134,8 +154,15 @@ const Calculator = () => {
                 <RefreshCw size={20} />
               </div>
               <h3 className="text-sm text-gray-600 mb-2">Média do CDI Últimos 12 Meses</h3>
-              <div className="rate">
-                {pastCDIRate.toFixed(2).replace('.', ',')}%
+              <div className="rate flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={pastCDIRate}
+                  onChange={(e) => handleCDIChange(e.target.value, setPastCDIRate)}
+                  className="w-24 text-lg font-semibold"
+                  step="0.01"
+                />
+                <span className="text-lg font-semibold">%</span>
               </div>
               <div className="info-icon">
                 <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
@@ -161,8 +188,15 @@ const Calculator = () => {
                 <TrendingUp size={20} />
               </div>
               <h3 className="text-sm text-gray-600 mb-2">CDI Futuro 12 Meses</h3>
-              <div className="rate">
-                {futureCDIRate.toFixed(2).replace('.', ',')}%
+              <div className="rate flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={futureCDIRate}
+                  onChange={(e) => handleCDIChange(e.target.value, setFutureCDIRate)}
+                  className="w-24 text-lg font-semibold"
+                  step="0.01"
+                />
+                <span className="text-lg font-semibold">%</span>
               </div>
               <div className="info-icon">
                 <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
