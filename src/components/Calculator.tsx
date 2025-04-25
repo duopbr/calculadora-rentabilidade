@@ -14,7 +14,7 @@ const Calculator = () => {
   const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
   // Taxas CDI (em %)
-  const currentCDIRate = 13.15;
+  const currentCDIRate = 14.15;
   const pastCDIRate = 10.93;
   const futureCDIRate = 14.86;
 
@@ -106,6 +106,7 @@ const Calculator = () => {
               <div className="icon">
                 <CalculatorIcon size={20} />
               </div>
+              <h3 className="text-sm text-gray-600 mb-2">CDI Atual</h3>
               <div className="rate">
                 {currentCDIRate.toFixed(2).replace('.', ',')}%
               </div>
@@ -132,6 +133,7 @@ const Calculator = () => {
               <div className="icon">
                 <RefreshCw size={20} />
               </div>
+              <h3 className="text-sm text-gray-600 mb-2">Média do CDI Últimos 12 Meses</h3>
               <div className="rate">
                 {pastCDIRate.toFixed(2).replace('.', ',')}%
               </div>
@@ -158,6 +160,7 @@ const Calculator = () => {
               <div className="icon">
                 <TrendingUp size={20} />
               </div>
+              <h3 className="text-sm text-gray-600 mb-2">CDI Futuro 12 Meses</h3>
               <div className="rate">
                 {futureCDIRate.toFixed(2).replace('.', ',')}%
               </div>
