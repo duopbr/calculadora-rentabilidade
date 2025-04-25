@@ -112,21 +112,6 @@ const Calculator = () => {
         </h2>
       </header>
 
-      <div className="bg-calculator-blue-light rounded-md p-4 mb-6 text-calculator-blue-dark">
-        <h3 className="text-lg font-semibold mb-2">Como Funciona</h3>
-        <p className="text-sm">
-          Esta calculadora ajuda você a estimar a rentabilidade mensal do seu patrimônio com base nas taxas do CDI (Certificado de Depósito Interbancário). Insira o valor do seu patrimônio e ajuste as taxas de CDI para ver diferentes cenários de rendimento bruto e líquido. As taxas consideradas são:
-        </p>
-        <ul className="list-disc list-inside text-sm mt-2 space-y-1">
-          <li><strong>CDI Atual:</strong> Taxa vigente no momento</li>
-          <li><strong>Média CDI 12 Meses:</strong> Rendimento médio dos últimos 12 meses</li>
-          <li><strong>CDI Futuro 12 Meses:</strong> Projeção para os próximos 12 meses</li>
-        </ul>
-        <p className="text-xs mt-2 text-gray-600">
-          * Cálculos baseados em rendimentos antes do imposto de renda (15% descontado).
-        </p>
-      </div>
-
       <div className="space-y-6">
         <div className="calculator-rate-box">
           <div className="icon">
