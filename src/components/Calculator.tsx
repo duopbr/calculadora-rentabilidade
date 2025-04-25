@@ -112,167 +112,150 @@ const Calculator = () => {
         </h2>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <div className="mb-8">
-            <div className="calculator-rate-box">
-              <div className="icon">
-                <CalculatorIcon size={20} />
-              </div>
-              <h3 className="text-sm text-gray-600 mb-2">CDI Atual</h3>
-              <div className="rate flex items-center gap-2">
-                <Input
-                  type="number"
-                  value={currentCDIRate}
-                  onChange={(e) => handleCDIChange(e.target.value, setCurrentCDIRate)}
-                  className="w-24 text-lg font-semibold"
-                  step="0.01"
-                />
-                <span className="text-lg font-semibold">%</span>
-              </div>
-              <div className="info-icon">
-                <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="month-box">
-                  <div className="value">
-                    {(currentCDIRate / 12).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Bruto</div>
-                </div>
-                <div className="month-box">
-                  <div className="value">
-                    {((currentCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Líquido</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="calculator-rate-box">
-              <div className="icon">
-                <RefreshCw size={20} />
-              </div>
-              <h3 className="text-sm text-gray-600 mb-2">Média do CDI Últimos 12 Meses</h3>
-              <div className="rate flex items-center gap-2">
-                <Input
-                  type="number"
-                  value={pastCDIRate}
-                  onChange={(e) => handleCDIChange(e.target.value, setPastCDIRate)}
-                  className="w-24 text-lg font-semibold"
-                  step="0.01"
-                />
-                <span className="text-lg font-semibold">%</span>
-              </div>
-              <div className="info-icon">
-                <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="month-box">
-                  <div className="value">
-                    {(pastCDIRate / 12).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Bruto</div>
-                </div>
-                <div className="month-box">
-                  <div className="value">
-                    {((pastCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Líquido</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="calculator-rate-box">
-              <div className="icon">
-                <TrendingUp size={20} />
-              </div>
-              <h3 className="text-sm text-gray-600 mb-2">CDI Futuro 12 Meses</h3>
-              <div className="rate flex items-center gap-2">
-                <Input
-                  type="number"
-                  value={futureCDIRate}
-                  onChange={(e) => handleCDIChange(e.target.value, setFutureCDIRate)}
-                  className="w-24 text-lg font-semibold"
-                  step="0.01"
-                />
-                <span className="text-lg font-semibold">%</span>
-              </div>
-              <div className="info-icon">
-                <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="month-box">
-                  <div className="value">
-                    {(futureCDIRate / 12).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Bruto</div>
-                </div>
-                <div className="month-box">
-                  <div className="value">
-                    {((futureCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
-                  </div>
-                  <div className="label">Mês Líquido</div>
-                </div>
-              </div>
-            </div>
+      <div className="space-y-6">
+        <div className="calculator-rate-box">
+          <div className="icon">
+            <CalculatorIcon size={20} />
           </div>
-
-          <div className="mb-6">
-            <CalculatorInput 
-              value={patrimony} 
-              onChange={setPatrimony} 
-              onClear={handleClear}
-              placeholder="Digite o valor do seu patrimônio" 
+          <h3 className="text-sm text-gray-600 mb-2">CDI Atual</h3>
+          <div className="rate flex items-center gap-2">
+            <Input
+              type="number"
+              value={currentCDIRate}
+              onChange={(e) => handleCDIChange(e.target.value, setCurrentCDIRate)}
+              className="w-24 text-lg font-semibold"
+              step="0.01"
             />
+            <span className="text-lg font-semibold">%</span>
           </div>
-
-          <div className="flex space-x-4">
-            <button 
-              onClick={handleClear}
-              className="calculator-button secondary flex-1"
-            >
-              Limpar
-            </button>
-            <button 
-              onClick={handleCalculate}
-              className="calculator-button primary flex-1"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <RefreshCw size={18} className="mr-2 animate-spin" />
-                  Calculando...
-                </span>
-              ) : 'Calcular'}
-            </button>
+          <div className="info-icon">
+            <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="month-box">
+              <div className="value">
+                {(currentCDIRate / 12).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Bruto</div>
+            </div>
+            <div className="month-box">
+              <div className="value">
+                {((currentCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Líquido</div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <div className="p-6">
-            <h3 className="text-2xl font-semibold text-center text-calculator-gray-dark mb-4">
-              Resultados
-            </h3>
-
-            {hasCalculated ? (
-              <CalculatorResults 
-                patrimony={patrimonyAsNumber}
-                currentCDI={currentCDIResult}
-                pastCDI={pastCDIResult}
-                futureCDI={futureCDIResult}
-              />
-            ) : (
-              <div className="h-64 flex items-center justify-center border-2 border-dashed border-gray-200 rounded-lg">
-                <p className="text-gray-400 text-center">
-                  Insira um valor e clique em Calcular<br />
-                  para ver os resultados
-                </p>
-              </div>
-            )}
+        <div className="calculator-rate-box">
+          <div className="icon">
+            <RefreshCw size={20} />
           </div>
+          <h3 className="text-sm text-gray-600 mb-2">Média do CDI Últimos 12 Meses</h3>
+          <div className="rate flex items-center gap-2">
+            <Input
+              type="number"
+              value={pastCDIRate}
+              onChange={(e) => handleCDIChange(e.target.value, setPastCDIRate)}
+              className="w-24 text-lg font-semibold"
+              step="0.01"
+            />
+            <span className="text-lg font-semibold">%</span>
+          </div>
+          <div className="info-icon">
+            <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="month-box">
+              <div className="value">
+                {(pastCDIRate / 12).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Bruto</div>
+            </div>
+            <div className="month-box">
+              <div className="value">
+                {((pastCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Líquido</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="calculator-rate-box">
+          <div className="icon">
+            <TrendingUp size={20} />
+          </div>
+          <h3 className="text-sm text-gray-600 mb-2">CDI Futuro 12 Meses</h3>
+          <div className="rate flex items-center gap-2">
+            <Input
+              type="number"
+              value={futureCDIRate}
+              onChange={(e) => handleCDIChange(e.target.value, setFutureCDIRate)}
+              className="w-24 text-lg font-semibold"
+              step="0.01"
+            />
+            <span className="text-lg font-semibold">%</span>
+          </div>
+          <div className="info-icon">
+            <div className="rounded-full bg-white w-5 h-5 flex items-center justify-center text-xs font-bold">i</div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="month-box">
+              <div className="value">
+                {(futureCDIRate / 12).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Bruto</div>
+            </div>
+            <div className="month-box">
+              <div className="value">
+                {((futureCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+              </div>
+              <div className="label">Mês Líquido</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <CalculatorInput 
+            value={patrimony} 
+            onChange={setPatrimony} 
+            onClear={handleClear}
+            placeholder="Digite o valor do seu patrimônio" 
+          />
+        </div>
+
+        <div className="flex space-x-4">
+          <button 
+            onClick={handleClear}
+            className="calculator-button secondary flex-1"
+          >
+            Limpar
+          </button>
+          <button 
+            onClick={handleCalculate}
+            className="calculator-button primary flex-1"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <RefreshCw size={18} className="mr-2 animate-spin" />
+                Calculando...
+              </span>
+            ) : 'Calcular'}
+          </button>
         </div>
       </div>
+
+      {hasCalculated && (
+        <div className="mt-8">
+          <CalculatorResults 
+            patrimony={patrimonyAsNumber}
+            currentCDI={currentCDIResult}
+            pastCDI={pastCDIResult}
+            futureCDI={futureCDIResult}
+          />
+        </div>
+      )}
 
       <Dialog open={showLeadForm} onOpenChange={setShowLeadForm}>
         <DialogContent className="sm:max-w-md">
