@@ -3,8 +3,8 @@ import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-reac
 import CalculatorInput from './CalculatorInput';
 import CalculatorResults from './CalculatorResults';
 import { toast } from '@/components/ui/use-toast';
-import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
-import LeadForm from './LeadForm';
+import { Dialog, DialogContent, DialogClose, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { LeadCaptureForm } from './LeadForm';
 import { Input } from '@/components/ui/input';
 
 const Calculator = () => {
@@ -257,12 +257,13 @@ const Calculator = () => {
         </div>
       )}
 
-      <Dialog open={showLeadForm} onOpenChange={setShowLeadForm}>
-        <DialogContent className="sm:max-w-md">
-          <LeadForm onSuccess={handleLeadFormSuccess} />
-          <DialogClose className="hidden" />
-        </DialogContent>
-      </Dialog>
+      <LeadCaptureForm 
+        isOpen={showLeadForm}
+        onOpenChange={setShowLeadForm}
+        onSubmitSuccess={handleLeadFormSuccess}
+        source="CalculadoraRentabilidade"
+      />
+
     </div>
   );
 };

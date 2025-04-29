@@ -1,129 +1,170 @@
-
 import React, { useState } from 'react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/use-toast';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-// Esquema de validação do formulário
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+
+// ✅ URL única para todas as calculadoras
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEOHIP-UCX_nHRD0_jsTY9YncsWhCENXFl_sxcxmQdRJR6Bq5g0z5LfA66JEyfpybREA/exec';
+
 const formSchema = z.object({
-  name: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
-  email: z.string().email({ message: 'Email inválido' }),
-  phone: z.string().min(10, { message: 'Telefone deve ter pelo menos 10 dígitos' }).optional(),
+  name: z.string().min(1, { message: "Nome é obrigatório." }),
+  email: z.string().email({ message: "Por favor, insira um email válido." }),
+  phone: z.string().optional(),
 });
 
-type LeadFormProps = {
-  onSuccess: () => void;
-};
+type LeadCaptureFormValues = z.infer<typeof formSchema>;
 
-const LeadForm: React.FC<LeadFormProps> = ({ onSuccess }) => {
+interface LeadCaptureFormProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  source: string; // ✅ Nome da aba da planilha
+  onSubmitSuccess: () => void;
+}
+
+export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
+  isOpen,
+  onOpenChange,
+  source,
+  onSubmitSuccess,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<LeadCaptureFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  async function onSubmit(values: LeadCaptureFormValues) {
+    if (!GOOGLE_SCRIPT_URL) {
+      toast({
+        title: "Erro de Configuração",
+        description: "URL do Google Apps Script não foi definida.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
-    
-    // Simulando envio para backend (aqui você conectaria com seu serviço de captura de leads)
     try {
-      // Simulação de delay para dar feedback ao usuário
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      
-      console.log('Lead capturado:', values);
-      
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          phone: values.phone || "",
+          source, // ✅ Envia nome da aba
+        }),
+      });
+
       toast({
         title: "Obrigado!",
-        description: "Suas informações foram registradas com sucesso.",
+        description: "Seus dados foram enviados.",
       });
-      
-      onSuccess();
+      onSubmitSuccess();
+      form.reset();
+      onOpenChange(false);
     } catch (error) {
       toast({
-        title: "Erro ao enviar formulário",
-        description: "Por favor, tente novamente mais tarde.",
+        title: "Erro",
+        description: `Não foi possível enviar seus dados. (${error instanceof Error ? error.message : String(error)})`,
         variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
 
   return (
-    <div className="py-4">
-      <h2 className="text-2xl font-bold text-calculator-gray-dark mb-6">
-        Calculadora Exclusiva de Rentabilidade
-      </h2>
-      <p className="text-calculator-gray mb-6">
-        Preencha seus dados para calcular o potencial de rendimento do seu patrimônio.
-      </p>
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nome completo</FormLabel>
-                <FormControl>
-                  <Input placeholder="Seu nome completo" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="seu@email.com" type="email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Telefone (opcional)</FormLabel>
-                <FormControl>
-                  <Input placeholder="(00) 00000-0000" type="tel" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="pt-4">
-            <Button 
-              type="submit" 
-              className="w-full bg-calculator-blue hover:bg-calculator-blue/90"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Processando...' : 'Calcular Agora'}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && onOpenChange(open)}>
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onInteractOutside={(e) => isSubmitting && e.preventDefault()}
+        onEscapeKeyDown={(e) => isSubmitting && e.preventDefault()}
+      >
+        <DialogHeader>
+          <DialogTitle>Só mais um passo!</DialogTitle>
+          <DialogDescription>
+            Para ver o resultado, por favor, deixe seu nome e email. Prometemos não enviar spam!
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Seu nome" {...field} disabled={isSubmitting} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="seu@email.com" {...field} disabled={isSubmitting} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Celular (opcional)</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="(00) 00000-0000" {...field} disabled={isSubmitting} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Enviando..." : "Ver Resultado e Salvar"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
-
-export default LeadForm;
