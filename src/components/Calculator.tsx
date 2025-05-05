@@ -16,8 +16,8 @@ const Calculator = () => {
 
   // CDI Rates with default values
   const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.15);
-  const [pastCDIRate, setPastCDIRate] = useState<number>(10.93);
-  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.86);
+  const [pastCDIRate, setPastCDIRate] = useState<number>(11.40);
+  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.45);
 
   // Handle CDI rate changes
   const handleCDIChange = (value: string, setter: (value: number) => void) => {
@@ -33,8 +33,8 @@ const Calculator = () => {
     setHasCalculated(false);
     // Reset CDI rates to default values
     setCurrentCDIRate(14.15);
-    setPastCDIRate(10.93);
-    setFutureCDIRate(14.86);
+    setPastCDIRate(11.40);
+    setFutureCDIRate(14.45);
   };
 
   // Handle lead form success
@@ -79,11 +79,16 @@ const Calculator = () => {
 
   // Calculate monthly income based on CDI rate
   const calculateMonthlyIncome = (principal: number, annualRate: number) => {
-    // Convert annual rate to monthly and calculate gross income
-    const monthlyRate = annualRate / 100 / 12;
+    // Converte a taxa anual (%) para decimal
+    const annualRateDecimal = annualRate / 100;
+    
+    // Taxa mensal usando a fórmula de juros compostos: (1 + taxa anual)^(1/12) - 1
+    const monthlyRate = Math.pow(1 + annualRateDecimal, 1/12) - 1;
+    
+    // Calcula o rendimento mensal bruto
     const grossMonthly = principal * monthlyRate;
     
-    // Calculate net income (after 15% income tax on financial investments)
+    // Calcula o rendimento mensal líquido (após 15% de IR)
     const netMonthly = grossMonthly * 0.85;
     
     return {
@@ -134,13 +139,13 @@ const Calculator = () => {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div className="month-box">
               <div className="value">
-                {(currentCDIRate / 12).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + currentCDIRate/100, 1/12) - 1) * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Bruto</div>
             </div>
             <div className="month-box">
               <div className="value">
-                {((currentCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + currentCDIRate/100, 1/12) - 1) * 0.85 * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Líquido</div>
             </div>
@@ -168,13 +173,13 @@ const Calculator = () => {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div className="month-box">
               <div className="value">
-                {(pastCDIRate / 12).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + pastCDIRate/100, 1/12) - 1) * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Bruto</div>
             </div>
             <div className="month-box">
               <div className="value">
-                {((pastCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + pastCDIRate/100, 1/12) - 1) * 0.85 * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Líquido</div>
             </div>
@@ -202,13 +207,13 @@ const Calculator = () => {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div className="month-box">
               <div className="value">
-                {(futureCDIRate / 12).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + futureCDIRate/100, 1/12) - 1) * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Bruto</div>
             </div>
             <div className="month-box">
               <div className="value">
-                {((futureCDIRate / 12) * 0.85).toFixed(2).replace('.', ',')}%
+                {((Math.pow(1 + futureCDIRate/100, 1/12) - 1) * 0.85 * 100).toFixed(3).replace('.', ',')}%
               </div>
               <div className="label">Mês Líquido</div>
             </div>
