@@ -77,10 +77,10 @@ const Calculator = () => {
     }
   };
 
-  // Calculate monthly income based on CDI rate
+  // Calculate monthly income based on CDI rate (using compound interest)
   const calculateMonthlyIncome = (principal: number, annualRate: number) => {
-    // Convert annual rate to monthly and calculate gross income
-    const monthlyRate = annualRate / 100 / 12;
+    // Convert annual rate to monthly using compound interest formula (^1/12)
+    const monthlyRate = Math.pow((1 + annualRate / 100), 1/12) - 1;
     const grossMonthly = principal * monthlyRate;
     
     // Calculate net income (after 15% income tax on financial investments)
