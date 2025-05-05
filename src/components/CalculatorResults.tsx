@@ -28,31 +28,37 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
   futureCDI
 }) => {
   const formatCurrency = (value: number) => {
+    // Round to 2 decimal places before formatting
+    const roundedValue = Math.round(value * 100) / 100;
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value);
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(roundedValue);
   };
 
   const formatPercentage = (value: number) => {
-    return value.toFixed(2).replace('.', ',') + '%';
+    // Round to 2 decimal places
+    const roundedValue = Math.round(value * 100) / 100;
+    return roundedValue.toFixed(2).replace('.', ',') + '%';
   };
 
-  // Prepare data for the chart
+  // Prepare data for the chart with rounded values
   const chartData = [
     { 
       name: 'CDI Atual', 
-      value: currentCDI.netMonthly, 
+      value: Math.round(currentCDI.netMonthly * 100) / 100, 
       color: '#4f46e5' 
     },
     { 
       name: 'CDI Últimos 12m', 
-      value: pastCDI.netMonthly, 
+      value: Math.round(pastCDI.netMonthly * 100) / 100, 
       color: '#60a5fa' 
     },
     { 
       name: 'CDI Futuro 12m', 
-      value: futureCDI.netMonthly, 
+      value: Math.round(futureCDI.netMonthly * 100) / 100, 
       color: '#10b981' 
     }
   ];
