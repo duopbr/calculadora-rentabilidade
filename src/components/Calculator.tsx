@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from './CalculatorInput';
@@ -16,7 +17,7 @@ const Calculator = () => {
 
   // CDI Rates with default values
   const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.15);
-  const [pastCDIRate, setPastCDIRate] = useState<number>(10.93);
+  const [pastCDIRate, setPastCDIRate] = useState<number>(11.40);
   const [futureCDIRate, setFutureCDIRate] = useState<number>(14.86);
 
   // Handle CDI rate changes
