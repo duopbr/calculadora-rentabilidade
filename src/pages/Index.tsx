@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Calculator from '@/components/Calculator';
-import { Check, DollarSign, SlidersHorizontal, Compare } from 'lucide-react';
+import { Check, DollarSign, SlidersHorizontal, BarChart2 } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -58,7 +58,7 @@ const Index = () => {
               {/* Step 4 */}
               <div className="flex flex-col items-center">
                 <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center text-blue-500 font-semibold mb-3">
-                  <Compare size={20} />
+                  <BarChart2 size={20} />
                 </div>
                 <div className="text-center">
                   <h3 className="font-medium text-calculator-blue-dark mb-2">Compare resultados</h3>
