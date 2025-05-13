@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Calculator from '@/components/Calculator';
+import { Check, DollarSign, SlidersHorizontal, Compare } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -16,21 +17,57 @@ const Index = () => {
       </header>
       
       <main className="container mx-auto py-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-100">
-            <h2 className="text-xl font-semibold text-calculator-blue-dark mb-3">Como funciona a Calculadora de Rentabilidade?</h2>
-            <p className="text-gray-700 mb-3">
-              Esta calculadora permite estimar a rentabilidade mensal do seu patrimônio com base em diferentes taxas CDI:
-            </p>
-            <ul className="list-disc pl-5 space-y-2 text-gray-700">
-              <li><span className="font-medium">CDI Atual:</span> Usa a taxa CDI vigente para calcular seus rendimentos.</li>
-              <li><span className="font-medium">CDI Últimos 12 Meses:</span> Calcula com base na média do CDI do último ano.</li>
-              <li><span className="font-medium">CDI Futuro 12 Meses:</span> Projeção de rendimentos para o próximo ano.</li>
-            </ul>
-            <p className="mt-3 text-gray-700">
-              Digite o valor do seu patrimônio e clique em "Calcular" para ver quanto você pode ganhar mensalmente em cada cenário.
-            </p>
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-10">
+            <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-5 text-center">Como usar esta calculadora</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center">
+                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center text-blue-500 font-semibold mb-3">
+                  <Check size={20} />
+                </div>
+                <div className="text-center">
+                  <h3 className="font-medium text-calculator-blue-dark mb-2">Escolha o ativo</h3>
+                  <p className="text-gray-600 text-sm">Selecione o tipo de investimento para calcular a rentabilidade.</p>
+                </div>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="flex flex-col items-center">
+                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center text-blue-500 font-semibold mb-3">
+                  <DollarSign size={20} />
+                </div>
+                <div className="text-center">
+                  <h3 className="font-medium text-calculator-blue-dark mb-2">Defina o valor</h3>
+                  <p className="text-gray-600 text-sm">Informe o valor do seu patrimônio para calcular os rendimentos.</p>
+                </div>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="flex flex-col items-center">
+                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center text-blue-500 font-semibold mb-3">
+                  <SlidersHorizontal size={20} />
+                </div>
+                <div className="text-center">
+                  <h3 className="font-medium text-calculator-blue-dark mb-2">Ajuste as taxas</h3>
+                  <p className="text-gray-600 text-sm">Configure as taxas CDI conforme seus cenários de interesse.</p>
+                </div>
+              </div>
+              
+              {/* Step 4 */}
+              <div className="flex flex-col items-center">
+                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center text-blue-500 font-semibold mb-3">
+                  <Compare size={20} />
+                </div>
+                <div className="text-center">
+                  <h3 className="font-medium text-calculator-blue-dark mb-2">Compare resultados</h3>
+                  <p className="text-gray-600 text-sm">Veja a diferença de rendimento entre os cenários e tome a melhor decisão.</p>
+                </div>
+              </div>
+            </div>
           </div>
+          
           <Calculator />
         </div>
       </main>
