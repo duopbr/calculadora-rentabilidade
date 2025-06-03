@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
 import CalculatorResults from '../CalculatorResults';
@@ -13,7 +13,7 @@ const CalculatorContainer = () => {
   const [patrimony, setPatrimony] = useState<string>('');
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showLeadForm, setShowLeadForm] = useState<boolean>(false);
+  const [showLeadForm, setShowLeadForm] = useState<boolean>(true); // Mudança aqui: inicia como true
   const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
   // CDI Rates with default values
@@ -35,9 +35,6 @@ const CalculatorContainer = () => {
   const handleLeadFormSuccess = () => {
     setShowLeadForm(false);
     setLeadCaptured(true);
-    
-    // Calculate after lead is captured
-    calculateResults();
   };
 
   // Calculate results after lead capture
