@@ -26,6 +26,13 @@ import { useToast } from "@/components/ui/use-toast";
 // ✅ URL única para todas as calculadoras
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEOHIP-UCX_nHRD0_jsTY9YncsWhCENXFl_sxcxmQdRJR6Bq5g0z5LfA66JEyfpybREA/exec';
 
+// Adicionar interface para o dataLayer do Google Tag Manager na window
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -84,6 +91,27 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           source, // ✅ Envia nome da aba
         }),
       });
+
+      // Enviar dados para o dataLayer do GTM
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'lead_capture_success',
+          user_data: {
+            em: values.email,
+            ph: values.phone || "",
+          }
+        });
+        
+        // Log para debug (remover em produção se necessário)
+        console.log('Dados enviados para o dataLayer:', {
+          event: 'lead_capture_success',
+          user_data: {
+            em: values.email,
+            ph: values.phone || "",
+          }
+        });
+      }
 
       toast({
         title: "Obrigado!",
