@@ -45,7 +45,13 @@ declare global {
 const formSchema = z.object({
   name: z.string().min(1, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "Por favor, insira um email válido." }),
-  phone: z.string().optional(),
+  phone: z.string()
+    .min(1, { message: "Telefone é obrigatório." })
+    .regex(/^\+55 \(\d{2}\) \d{5}-\d{4}$/, { message: "Formato inválido. Use: +55 (XX) XXXXX-XXXX" })
+    .refine((phone) => {
+      const digits = phone.replace(/\D/g, '');
+      return digits.length === 13; // +55 + 11 dígitos
+    }, { message: "Telefone deve ter 11 dígitos." }),
   patrimonio: z.string().min(1, { message: "Patrimônio investido é obrigatório." }),
   valorMensal: z.string().min(1, { message: "Valor mensal é obrigatório." }),
 });
@@ -58,6 +64,21 @@ interface LeadCaptureFormProps {
   source: string; // ✅ Nome da aba da planilha
   onSubmitSuccess: () => void;
 }
+
+// Função para aplicar máscara no telefone
+const formatPhoneNumber = (value: string) => {
+  // Remove todos os caracteres não numéricos
+  const numbers = value.replace(/\D/g, '');
+  
+  // Se começar com 55, remove para evitar duplicação
+  const cleanNumbers = numbers.startsWith('55') ? numbers.slice(2) : numbers;
+  
+  // Aplica a máscara progressivamente
+  if (cleanNumbers.length === 0) return '+55 ';
+  if (cleanNumbers.length <= 2) return `+55 (${cleanNumbers}`;
+  if (cleanNumbers.length <= 7) return `+55 (${cleanNumbers.slice(0, 2)}) ${cleanNumbers.slice(2)}`;
+  return `+55 (${cleanNumbers.slice(0, 2)}) ${cleanNumbers.slice(2, 7)}-${cleanNumbers.slice(7, 11)}`;
+};
 
 export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   isOpen,
@@ -73,22 +94,30 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     defaultValues: {
       name: "",
       email: "",
-      phone: "",
+      phone: "+55 ",
       patrimonio: "",
       valorMensal: "",
     },
   });
 
+  const handlePhoneChange = (value: string, onChange: (value: string) => void) => {
+    const formatted = formatPhoneNumber(value);
+    onChange(formatted);
+  };
+
   async function onSubmit(values: LeadCaptureFormValues) {
     setIsSubmitting(true);
     try {
+      // Extrair apenas os números do telefone para salvar no banco
+      const phoneNumbers = values.phone.replace(/\D/g, '');
+      
       // Inserir dados no Supabase
       const { error: supabaseError } = await supabase
         .from('Calculadoras')
         .insert({
           Name: values.name,
           email: values.email,
-          phone: values.phone ? parseInt(values.phone.replace(/\D/g, '')) : null,
+          phone: parseInt(phoneNumbers),
           patrimonio: values.patrimonio,
           valor_mes: values.valorMensal,
           calculadora: { source } // JSON com informações da calculadora
@@ -116,7 +145,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
             body: JSON.stringify({
               name: values.name,
               email: values.email,
-              phone: values.phone || "",
+              phone: values.phone,
               patrimonio: values.patrimonio,
               valorMensal: values.valorMensal,
               source, // ✅ Envia nome da aba
@@ -135,7 +164,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           event: 'lead_capture_success',
           user_data: {
             em: values.email,
-            ph: values.phone || "",
+            ph: values.phone,
           }
         });
         
@@ -144,7 +173,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           event: 'lead_capture_success',
           user_data: {
             em: values.email,
-            ph: values.phone || "",
+            ph: values.phone,
           }
         });
       }
@@ -214,9 +243,16 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Celular (opcional)</FormLabel>
+                  <FormLabel>Celular</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(00) 00000-0000" {...field} disabled={isSubmitting} />
+                    <Input 
+                      type="tel" 
+                      placeholder="+55 (XX) XXXXX-XXXX" 
+                      {...field}
+                      onChange={(e) => handlePhoneChange(e.target.value, field.onChange)}
+                      disabled={isSubmitting}
+                      maxLength={19}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -273,6 +309,14 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                 </FormItem>
               )}
             />
+            
+            {/* Mensagem de proteção de dados */}
+            <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-md">
+              🔒 <strong>Seus dados estão protegidos:</strong> Utilizamos criptografia e seguimos a LGPD. 
+              Suas informações são usadas apenas para gerar o resultado da calculadora e enviar conteúdos relevantes. 
+              Não compartilhamos seus dados com terceiros.
+            </div>
+
             <DialogFooter>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Enviando..." : "Ver Resultado e Salvar"}
