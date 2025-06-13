@@ -68,7 +68,7 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
       <div className="calculator-result-box mb-6">
         <div className="text-left">
           <p className="label">Quanto Você ganhará por mês</p>
-          <p className="label">(CDI Futuro - 12 meses)</p>
+          <p className="label">(líquido de IR - CDI Futuro 12 meses)</p>
         </div>
         <div className="text-right">
           <p className="value">{formatCurrency(futureCDI.netMonthly)}</p>
