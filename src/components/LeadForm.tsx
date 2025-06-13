@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -79,32 +80,53 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   });
 
   async function onSubmit(values: LeadCaptureFormValues) {
-    if (!GOOGLE_SCRIPT_URL) {
-      toast({
-        title: "Erro de Configuração",
-        description: "URL do Google Apps Script não foi definida.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: values.name,
+      // Inserir dados no Supabase
+      const { error: supabaseError } = await supabase
+        .from('Calculadoras')
+        .insert({
+          Name: values.name,
           email: values.email,
-          phone: values.phone || "",
+          phone: values.phone ? parseInt(values.phone.replace(/\D/g, '')) : null,
           patrimonio: values.patrimonio,
-          valorMensal: values.valorMensal,
-          source, // ✅ Envia nome da aba
-        }),
-      });
+          valor_mes: values.valorMensal,
+          calculadora: { source } // JSON com informações da calculadora
+        });
+
+      if (supabaseError) {
+        console.error('Erro ao salvar no Supabase:', supabaseError);
+        toast({
+          title: "Erro",
+          description: "Não foi possível salvar seus dados. Tente novamente.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Continuar enviando para Google Sheets se necessário
+      if (GOOGLE_SCRIPT_URL) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: values.name,
+              email: values.email,
+              phone: values.phone || "",
+              patrimonio: values.patrimonio,
+              valorMensal: values.valorMensal,
+              source, // ✅ Envia nome da aba
+            }),
+          });
+        } catch (googleError) {
+          console.warn('Erro ao enviar para Google Sheets:', googleError);
+          // Não bloqueia o fluxo se o Google Sheets falhar
+        }
+      }
 
       // Enviar dados para o dataLayer do GTM
       if (typeof window !== 'undefined') {
@@ -129,12 +151,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 
       toast({
         title: "Obrigado!",
-        description: "Seus dados foram enviados.",
+        description: "Seus dados foram enviados com sucesso.",
       });
       onSubmitSuccess();
       form.reset();
       onOpenChange(false);
     } catch (error) {
+      console.error('Erro geral:', error);
       toast({
         title: "Erro",
         description: `Não foi possível enviar seus dados. (${error instanceof Error ? error.message : String(error)})`,
