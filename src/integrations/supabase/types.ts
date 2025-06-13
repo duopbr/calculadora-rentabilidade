@@ -11,33 +11,33 @@ export type Database = {
     Tables: {
       Calculadoras: {
         Row: {
-          calculadora: Json | null
+          calculadora: string | null
           created_at: string
           email: string | null
           id: number
           Name: string | null
           patrimonio: string | null
-          phone: number | null
+          phone: string | null
           valor_mes: string | null
         }
         Insert: {
-          calculadora?: Json | null
+          calculadora?: string | null
           created_at?: string
           email?: string | null
           id?: number
           Name?: string | null
           patrimonio?: string | null
-          phone?: number | null
+          phone?: string | null
           valor_mes?: string | null
         }
         Update: {
-          calculadora?: Json | null
+          calculadora?: string | null
           created_at?: string
           email?: string | null
           id?: number
           Name?: string | null
           patrimonio?: string | null
-          phone?: number | null
+          phone?: string | null
           valor_mes?: string | null
         }
         Relationships: []

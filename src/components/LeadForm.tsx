@@ -111,13 +111,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       // Extrair apenas os números do telefone para salvar no banco
       const phoneNumbers = values.phone.replace(/\D/g, '');
       
-      // Inserir dados no Supabase
+      // Inserir dados no Supabase - agora phone é um número
       const { error: supabaseError } = await supabase
         .from('Calculadoras')
         .insert({
           Name: values.name,
           email: values.email,
-          phone: parseInt(phoneNumbers),
+          phone: parseInt(phoneNumbers), // Convertendo para número
           patrimonio: values.patrimonio,
           valor_mes: values.valorMensal,
           calculadora: { source } // JSON com informações da calculadora
