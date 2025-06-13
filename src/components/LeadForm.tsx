@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,6 +22,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
 // ✅ URL única para todas as calculadoras
@@ -37,6 +45,8 @@ const formSchema = z.object({
   name: z.string().min(1, { message: "Nome é obrigatório." }),
   email: z.string().email({ message: "Por favor, insira um email válido." }),
   phone: z.string().optional(),
+  patrimonio: z.string().min(1, { message: "Patrimônio investido é obrigatório." }),
+  valorMensal: z.string().min(1, { message: "Valor mensal é obrigatório." }),
 });
 
 type LeadCaptureFormValues = z.infer<typeof formSchema>;
@@ -63,6 +73,8 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       name: "",
       email: "",
       phone: "",
+      patrimonio: "",
+      valorMensal: "",
     },
   });
 
@@ -88,6 +100,8 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           name: values.name,
           email: values.email,
           phone: values.phone || "",
+          patrimonio: values.patrimonio,
+          valorMensal: values.valorMensal,
           source, // ✅ Envia nome da aba
         }),
       });
@@ -141,7 +155,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         <DialogHeader>
           <DialogTitle>Só mais um passo!</DialogTitle>
           <DialogDescription>
-            Para ver o resultado, por favor, deixe seu nome e email. Prometemos não enviar spam!
+            Para ver o resultado, por favor, deixe suas informações. Prometemos não enviar spam!
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -181,6 +195,57 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                   <FormControl>
                     <Input type="tel" placeholder="(00) 00000-0000" {...field} disabled={isSubmitting} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="patrimonio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Patrimônio líquido investido *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="até-50mil">Até R$ 50 mil</SelectItem>
+                      <SelectItem value="50mil-150mil">R$ 50 mil - R$ 150 mil</SelectItem>
+                      <SelectItem value="150mil-300mil">R$ 150 mil - R$ 300 mil</SelectItem>
+                      <SelectItem value="300mil-500mil">R$ 300 mil - R$ 500 mil</SelectItem>
+                      <SelectItem value="500mil-1milhao">R$ 500 mil - R$ 1 milhão</SelectItem>
+                      <SelectItem value="acima-1milhao">Acima de R$ 1 milhão</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="valorMensal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor disponível para investir por mês *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="até-300">Até R$ 300</SelectItem>
+                      <SelectItem value="300-500">R$ 300 - R$ 500</SelectItem>
+                      <SelectItem value="500-1000">R$ 500 - R$ 1.000</SelectItem>
+                      <SelectItem value="1000-3000">R$ 1.000 - R$ 3.000</SelectItem>
+                      <SelectItem value="3000-5000">R$ 3.000 - R$ 5.000</SelectItem>
+                      <SelectItem value="5000-10000">R$ 5.000 - R$ 10.000</SelectItem>
+                      <SelectItem value="acima-10000">Acima de R$ 10.000</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
