@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
@@ -19,7 +18,7 @@ const CalculatorContainer = () => {
   // CDI Rates with default values
   const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.65);
   const [pastCDIRate, setPastCDIRate] = useState<number>(11.92);
-  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.4497);
+  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.64);
 
   // Reset calculator
   const handleClear = () => {
@@ -28,7 +27,7 @@ const CalculatorContainer = () => {
     // Reset CDI rates to default values
     setCurrentCDIRate(14.65);
     setPastCDIRate(11.92);
-    setFutureCDIRate(14.4497);
+    setFutureCDIRate(14.64);
   };
 
   // Handle lead form success
