@@ -111,11 +111,20 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       // Extrair apenas os números do telefone para salvar no banco
       const phoneNumbers = values.phone.replace(/\D/g, '');
       
-      // Inserir dados no Supabase - phone agora é número
+      console.log('Dados a serem enviados:', {
+        Name: values.name, // Usando 'Name' com N maiúsculo conforme schema
+        email: values.email,
+        phone: phoneNumbers,
+        patrimonio: values.patrimonio,
+        valor_mes: values.valorMensal,
+        calculadora: source
+      });
+      
+      // Inserir dados no Supabase - usando Name com N maiúsculo
       const { error: supabaseError } = await supabase
         .from('Calculadoras')
         .insert({
-          name: values.name, // Usando lowercase 'name' conforme schema
+          Name: values.name, // Usando 'Name' com N maiúsculo conforme schema da tabela
           email: values.email,
           phone: phoneNumbers, // Salvando como string de números
           patrimonio: values.patrimonio,
@@ -132,6 +141,8 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         });
         return;
       }
+
+      console.log('Dados salvos no Supabase com sucesso!');
 
       // Continuar enviando para Google Sheets se necessário
       if (GOOGLE_SCRIPT_URL) {
