@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
@@ -30,12 +31,6 @@ const CalculatorContainer = () => {
     setFutureCDIRate(14.64);
   };
 
-  // Handle lead form success
-  const handleLeadFormSuccess = () => {
-    setShowLeadForm(false);
-    setLeadCaptured(true);
-  };
-
   // Calculate results after lead capture
   const calculateResults = () => {
     setIsLoading(true);
@@ -45,6 +40,14 @@ const CalculatorContainer = () => {
       setHasCalculated(true);
       setIsLoading(false);
     }, 600);
+  };
+
+  // Handle lead form success - now automatically calculates
+  const handleLeadFormSuccess = () => {
+    setShowLeadForm(false);
+    setLeadCaptured(true);
+    // Automatically calculate results after lead capture
+    calculateResults();
   };
 
   // Calculate button handler - show lead form if not captured
