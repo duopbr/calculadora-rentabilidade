@@ -18,7 +18,7 @@ const CalculatorContainer = () => {
 
   // CDI Rates with default values
   const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.65);
-  const [pastCDIRate, setPastCDIRate] = useState<number>(11.40);
+  const [pastCDIRate, setPastCDIRate] = useState<number>(11.92);
   const [futureCDIRate, setFutureCDIRate] = useState<number>(14.4497);
 
   // Reset calculator
@@ -27,7 +27,7 @@ const CalculatorContainer = () => {
     setHasCalculated(false);
     // Reset CDI rates to default values
     setCurrentCDIRate(14.65);
-    setPastCDIRate(10.93);
+    setPastCDIRate(11.92);
     setFutureCDIRate(14.4497);
   };
 
