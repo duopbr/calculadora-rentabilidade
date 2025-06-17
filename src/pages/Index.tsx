@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Calculator from '@/components/Calculator';
 import { Check, DollarSign, SlidersHorizontal, BarChart2 } from 'lucide-react';
@@ -9,9 +8,12 @@ const Index = () => {
       <header className="border-b border-gray-100 py-4">
         <div className="container mx-auto px-4">
           <img 
-            src="/lovable-uploads/81cabb12-e425-469b-be89-7110bca0ebfb.png" 
+            src="/lovable-uploads/81cabb12-e425-469b-be89-7110bca0ebfb.webp" 
             alt="Duop Logo" 
-            className="h-12"
+            className="h-12 w-auto"
+            width="192"
+            height="48"
+            fetchPriority="high"
           />
         </div>
       </header>
