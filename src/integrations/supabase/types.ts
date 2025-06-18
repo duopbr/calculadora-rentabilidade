@@ -49,6 +49,7 @@ export type Database = {
           id: string
           name: string
           payment_method: string
+          phone: string | null
           plan_price: string
           plan_title: string
         }
@@ -58,6 +59,7 @@ export type Database = {
           id?: string
           name: string
           payment_method: string
+          phone?: string | null
           plan_price: string
           plan_title: string
         }
@@ -67,6 +69,7 @@ export type Database = {
           id?: string
           name?: string
           payment_method?: string
+          phone?: string | null
           plan_price?: string
           plan_title?: string
         }

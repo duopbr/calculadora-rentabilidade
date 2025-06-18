@@ -20,6 +20,13 @@ const Index = () => {
       
       <main className="container mx-auto py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Main Heading - H1 */}
+          <div className="mb-10 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-calculator-blue-dark mb-4">
+              Calculadora de Rendimentos Mensais (CDI): Simule sua Renda
+            </h1>
+          </div>
+
           <div className="mb-10">
             <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-5 text-center">Como usar esta calculadora</h2>
             
@@ -70,7 +77,93 @@ const Index = () => {
             </div>
           </div>
           
+          {/* Calculator Component - Unchanged */}
           <Calculator />
+
+          {/* Educational Content Section - NEW CONTENT BELOW CALCULATOR */}
+          <section className="mt-16 max-w-4xl mx-auto">
+            <article className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-6">
+                Entendendo os Juros Compostos: A Bola de Neve do seu Dinheiro
+              </h2>
+              
+              <div className="text-gray-700 leading-relaxed space-y-4 mb-8">
+                <p>
+                  Você já se perguntou por que os resultados da calculadora são tão impressionantes a longo prazo? 
+                  A resposta está nos juros compostos, muitas vezes chamados de "a oitava maravilha do mundo".
+                </p>
+                
+                <p>
+                  Diferente dos juros simples, que rendem sempre sobre o valor inicial, os juros compostos são 
+                  "juros sobre juros". Funciona assim:
+                </p>
+                
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>Seu dinheiro rende juros no primeiro mês.</li>
+                  <li>No segundo mês, os juros renderão não apenas sobre o valor inicial, mas também sobre os juros que você já ganhou.</li>
+                  <li>Esse ciclo se repete, criando um efeito "bola de neve": seu patrimônio cresce de forma exponencial ao longo do tempo.</li>
+                </ul>
+                
+                <p>
+                  É por isso que começar a investir o quanto antes, mesmo com pouco dinheiro, faz uma diferença 
+                  gigantesca no seu futuro financeiro.
+                </p>
+              </div>
+
+              {/* FAQ Section */}
+              <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-6">
+                Perguntas Frequentes sobre Investimentos e Rendimentos
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h3 className="text-xl font-medium text-calculator-blue-dark mb-3">
+                    Qual a diferença entre juros simples e juros compostos?
+                  </h3>
+                  <p className="text-gray-700">
+                    Os juros simples incidem sempre sobre o valor inicial investido. Já os juros compostos incidem 
+                    sobre o montante total (valor inicial + juros acumulados), permitindo um crescimento muito mais 
+                    rápido do seu dinheiro. Nossa calculadora utiliza a fórmula de juros compostos para uma projeção realista.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h3 className="text-xl font-medium text-calculator-blue-dark mb-3">
+                    Esta calculadora serve para qualquer tipo de investimento?
+                  </h3>
+                  <p className="text-gray-700">
+                    Sim! Ela é ideal para simular qualquer investimento com uma rentabilidade previsível, como 
+                    Tesouro Direto (Selic, IPCA+), CDBs, LCIs, LCAs e fundos de investimento. Para renda variável 
+                    (ações, fundos imobiliários), a taxa de juros pode ser usada como uma estimativa de rentabilidade 
+                    média que você espera alcançar.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h3 className="text-xl font-medium text-calculator-blue-dark mb-3">
+                    Quanto preciso para começar a investir?
+                  </h3>
+                  <p className="text-gray-700">
+                    Hoje, é possível começar a investir com valores muito baixos, como R$ 30 ou até menos. 
+                    O mais importante não é a quantidade inicial, mas sim a disciplina de fazer aportes mensais 
+                    e deixar o tempo agir. Use a calculadora para ver como até mesmo pequenos valores se transformam 
+                    em uma grande fortuna.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h3 className="text-xl font-medium text-calculator-blue-dark mb-3">
+                    O resultado da simulação é garantido?
+                  </h3>
+                  <p className="text-gray-700">
+                    Não. A calculadora é uma ferramenta de projeção baseada nos dados que você insere. 
+                    A rentabilidade de investimentos, especialmente os de renda variável, pode oscilar. 
+                    Para a renda fixa, a projeção tende a ser mais precisa, mas ainda assim é uma estimativa.
+                  </p>
+                </div>
+              </div>
+            </article>
+          </section>
         </div>
       </main>
       
