@@ -50,6 +50,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const ResultChart: React.FC<ResultChartProps> = ({ data }) => {
+  // Calculate dynamic Y-axis maximum (10-15% higher than the tallest bar)
+  const maxValue = Math.max(...data.map(item => item.value));
+  const yAxisMax = maxValue * 1.15; // 15% higher than the tallest bar
+
   return (
     <div className="w-full h-[300px] mt-4 animate-fade-up">
       <ResponsiveContainer width="100%" height="100%">
@@ -75,6 +79,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ data }) => {
             axisLine={false}
             tickLine={false}
             tick={{ fill: '#64748b', fontSize: 12 }}
+            domain={[0, yAxisMax]}
           />
           <Tooltip content={<CustomTooltip />} />
           <Bar 
