@@ -116,8 +116,11 @@ const CalculatorContainer = () => {
           onRateChange={setFutureCDIRate}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 items-end">
           <div className="flex flex-col">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Valor do patrimônio
+            </label>
             <CalculatorInput 
               value={patrimony} 
               onChange={setPatrimony} 
