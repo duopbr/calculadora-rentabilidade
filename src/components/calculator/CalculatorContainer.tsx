@@ -117,7 +117,7 @@ const CalculatorContainer = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
+          <div className="flex flex-col">
             <CalculatorInput 
               value={patrimony} 
               onChange={setPatrimony} 
@@ -125,7 +125,7 @@ const CalculatorContainer = () => {
               placeholder="Digite o valor do seu patrimônio" 
             />
           </div>
-          <div>
+          <div className="flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Período (em anos)
             </label>

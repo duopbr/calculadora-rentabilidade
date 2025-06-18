@@ -96,7 +96,7 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
               top: 20,
               right: 30,
               left: 20,
-              bottom: 20,
+              bottom: 60,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
@@ -114,7 +114,12 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
               tick={{ fill: '#64748b', fontSize: 12 }}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend 
+              verticalAlign="bottom" 
+              height={36}
+              align="center"
+              wrapperStyle={{ paddingTop: '20px' }}
+            />
             <Line 
               type="monotone" 
               dataKey="valorInvestido" 
