@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   LineChart, 
@@ -72,17 +73,17 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
     <div className="mt-8 animate-fade-up">
       {/* Summary Boxes - Made responsive */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-        <div className="text-center p-3 bg-calculator-gray rounded-md">
+        <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total final</p>
-          <p className="font-bold text-lg sm:text-xl text-calculator-gray-dark break-words">{formatCurrency(finalValue)}</p>
+          <p className="font-bold text-sm sm:text-lg md:text-xl text-calculator-gray-dark break-all hyphens-auto overflow-hidden">{formatCurrency(finalValue)}</p>
         </div>
-        <div className="text-center p-3 bg-calculator-gray rounded-md">
+        <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total investido</p>
-          <p className="font-bold text-lg sm:text-xl text-calculator-gray-dark break-words">{formatCurrency(initialValue)}</p>
+          <p className="font-bold text-sm sm:text-lg md:text-xl text-calculator-gray-dark break-all hyphens-auto overflow-hidden">{formatCurrency(initialValue)}</p>
         </div>
-        <div className="text-center p-3 bg-calculator-gray rounded-md">
+        <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Total em juros</p>
-          <p className="font-bold text-lg sm:text-xl text-green-600 break-words">{formatCurrency(totalInterest)}</p>
+          <p className="font-bold text-sm sm:text-lg md:text-xl text-green-600 break-all hyphens-auto overflow-hidden">{formatCurrency(totalInterest)}</p>
         </div>
       </div>
 
