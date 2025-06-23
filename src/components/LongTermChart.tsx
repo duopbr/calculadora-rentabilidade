@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   LineChart, 
@@ -71,19 +70,19 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
 
   return (
     <div className="mt-8 animate-fade-up">
-      {/* Summary Boxes */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="text-center p-4 bg-calculator-gray rounded-md">
-          <p className="text-sm text-gray-600 mb-1">Valor total final</p>
-          <p className="font-bold text-xl text-calculator-gray-dark">{formatCurrency(finalValue)}</p>
+      {/* Summary Boxes - Made responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div className="text-center p-3 bg-calculator-gray rounded-md">
+          <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total final</p>
+          <p className="font-bold text-lg sm:text-xl text-calculator-gray-dark break-words">{formatCurrency(finalValue)}</p>
         </div>
-        <div className="text-center p-4 bg-calculator-gray rounded-md">
-          <p className="text-sm text-gray-600 mb-1">Valor total investido</p>
-          <p className="font-bold text-xl text-calculator-gray-dark">{formatCurrency(initialValue)}</p>
+        <div className="text-center p-3 bg-calculator-gray rounded-md">
+          <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total investido</p>
+          <p className="font-bold text-lg sm:text-xl text-calculator-gray-dark break-words">{formatCurrency(initialValue)}</p>
         </div>
-        <div className="text-center p-4 bg-calculator-gray rounded-md">
-          <p className="text-sm text-gray-600 mb-1">Total em juros</p>
-          <p className="font-bold text-xl text-green-600">{formatCurrency(totalInterest)}</p>
+        <div className="text-center p-3 bg-calculator-gray rounded-md">
+          <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Total em juros</p>
+          <p className="font-bold text-lg sm:text-xl text-green-600 break-words">{formatCurrency(totalInterest)}</p>
         </div>
       </div>
 
