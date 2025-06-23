@@ -52,12 +52,12 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
       color: '#4f46e5' 
     },
     { 
-      name: 'CDI Últimos 12m', 
+      name: 'Quanto rendeu o CDI nos ultimos 12 meses', 
       value: Math.round(pastCDI.netMonthly * 100) / 100, 
       color: '#60a5fa' 
     },
     { 
-      name: 'CDI Futuro 12m', 
+      name: 'Quanto o CDI deve render nos proximos 12 meses', 
       value: Math.round(futureCDI.netMonthly * 100) / 100, 
       color: '#10b981' 
     }
