@@ -12,30 +12,42 @@ export type Database = {
       Calculadoras: {
         Row: {
           calculadora: string | null
+          Contato: string | null
           created_at: string
           email: string | null
           id: number
+          "Média de Mensagens por Conversas": string | null
           Name: string | null
+          Nota: string | null
+          "Numero de Conversas": string | null
           patrimonio: string | null
           phone: string | null
           valor_mes: string | null
         }
         Insert: {
           calculadora?: string | null
+          Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
+          Nota?: string | null
+          "Numero de Conversas"?: string | null
           patrimonio?: string | null
           phone?: string | null
           valor_mes?: string | null
         }
         Update: {
           calculadora?: string | null
+          Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
+          Nota?: string | null
+          "Numero de Conversas"?: string | null
           patrimonio?: string | null
           phone?: string | null
           valor_mes?: string | null
@@ -77,33 +89,42 @@ export type Database = {
       }
       pix_phone_submissions: {
         Row: {
+          Chatgpt: string | null
           Email: string | null
           id: number
+          "Interesse em dados": string | null
           "Investir Mês": string | null
           "Ja foi contatado?": string | null
           Patrimonio: string | null
           phone_number: string | null
           plan_title: string | null
+          "Se sentiu enganado": string | null
           submitted_at: string | null
         }
         Insert: {
+          Chatgpt?: string | null
           Email?: string | null
           id?: number
+          "Interesse em dados"?: string | null
           "Investir Mês"?: string | null
           "Ja foi contatado?"?: string | null
           Patrimonio?: string | null
           phone_number?: string | null
           plan_title?: string | null
+          "Se sentiu enganado"?: string | null
           submitted_at?: string | null
         }
         Update: {
+          Chatgpt?: string | null
           Email?: string | null
           id?: number
+          "Interesse em dados"?: string | null
           "Investir Mês"?: string | null
           "Ja foi contatado?"?: string | null
           Patrimonio?: string | null
           phone_number?: string | null
           plan_title?: string | null
+          "Se sentiu enganado"?: string | null
           submitted_at?: string | null
         }
         Relationships: []

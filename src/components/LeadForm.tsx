@@ -53,7 +53,9 @@ const formSchema = z.object({
       return digits.length === 13; // +55 + 11 dígitos
     }, { message: "Telefone deve ter 11 dígitos." }),
   patrimonio: z.string().min(1, { message: "Patrimônio investido é obrigatório." }),
-  valorMensal: z.string().min(1, { message: "Valor mensal é obrigatório." }),
+  interesseDados: z.string().min(1, { message: "Por favor, selecione uma opção." }),
+  chatgpt: z.string().min(1, { message: "Por favor, selecione uma opção." }),
+  sentiuEnganado: z.string().min(1, { message: "Por favor, selecione uma opção." }),
 });
 
 type LeadCaptureFormValues = z.infer<typeof formSchema>;
@@ -96,7 +98,9 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       email: "",
       phone: "+55 ",
       patrimonio: "",
-      valorMensal: "",
+      interesseDados: "",
+      chatgpt: "",
+      sentiuEnganado: "",
     },
   });
 
@@ -108,28 +112,32 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   async function onSubmit(values: LeadCaptureFormValues) {
     setIsSubmitting(true);
     try {
-      // Extrair apenas os números do telefone para salvar no banco
-      const phoneNumbers = values.phone.replace(/\D/g, '');
+      // Manter o telefone no formato +XX (XX) XXXXX-XXXX no banco
+      const phoneFormatted = values.phone;
       
       console.log('Dados a serem enviados:', {
-        Name: values.name, // Usando 'Name' com N maiúsculo conforme schema
+        Name: values.name,
         email: values.email,
-        phone: phoneNumbers,
+        phone: phoneFormatted, // Mantém formato completo
         patrimonio: values.patrimonio,
-        valor_mes: values.valorMensal,
-        calculadora: source
+        calculadora: source,
+        "Interesse em dados": values.interesseDados,
+        "Chatgpt": values.chatgpt,
+        "Se sentiu enganado": values.sentiuEnganado
       });
       
-      // Inserir dados no Supabase - usando Name com N maiúsculo
+      // Inserir dados no Supabase
       const { error: supabaseError } = await supabase
         .from('Calculadoras')
         .insert({
-          Name: values.name, // Usando 'Name' com N maiúsculo conforme schema da tabela
+          Name: values.name,
           email: values.email,
-          phone: phoneNumbers, // Salvando como string de números
+          phone: phoneFormatted, // Salva no formato +XX (XX) XXXXX-XXXX
           patrimonio: values.patrimonio,
-          valor_mes: values.valorMensal,
-          calculadora: source // String simples ao invés de JSON
+          calculadora: source,
+          "Interesse em dados": values.interesseDados,
+          "Chatgpt": values.chatgpt,
+          "Se sentiu enganado": values.sentiuEnganado
         });
 
       if (supabaseError) {
@@ -158,8 +166,10 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
               email: values.email,
               phone: values.phone,
               patrimonio: values.patrimonio,
-              valorMensal: values.valorMensal,
-              source, // ✅ Envia nome da aba
+              source,
+              interesseDados: values.interesseDados,
+              chatgpt: values.chatgpt,
+              sentiuEnganado: values.sentiuEnganado,
             }),
           });
         } catch (googleError) {
@@ -179,7 +189,6 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           }
         });
         
-        // Log para debug (remover em produção se necessário)
         console.log('Dados enviados para o dataLayer:', {
           event: 'lead_capture_success',
           user_data: {
@@ -211,7 +220,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && onOpenChange(open)}>
       <DialogContent
-        className="sm:max-w-[425px]"
+        className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto"
         onInteractOutside={(e) => isSubmitting && e.preventDefault()}
         onEscapeKeyDown={(e) => isSubmitting && e.preventDefault()}
       >
@@ -294,12 +303,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="valorMensal"
+              name="interesseDados"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valor disponível para investir por mês *</FormLabel>
+                  <FormLabel>Você tem interesse em dados e notícias de investimento?</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                     <FormControl>
                       <SelectTrigger>
@@ -307,13 +317,55 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="até-300">Até R$ 300</SelectItem>
-                      <SelectItem value="300-500">R$ 300 - R$ 500</SelectItem>
-                      <SelectItem value="500-1000">R$ 500 - R$ 1.000</SelectItem>
-                      <SelectItem value="1000-3000">R$ 1.000 - R$ 3.000</SelectItem>
-                      <SelectItem value="3000-5000">R$ 3.000 - R$ 5.000</SelectItem>
-                      <SelectItem value="5000-10000">R$ 5.000 - R$ 10.000</SelectItem>
-                      <SelectItem value="acima-10000">Acima de R$ 10.000</SelectItem>
+                      <SelectItem value="sim-frequencia">Sim, vejo com frequência</SelectItem>
+                      <SelectItem value="medio">Médio</SelectItem>
+                      <SelectItem value="nao-muito-interesse">Não tenho muito interesse</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="chatgpt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Usa o ChatGPT?</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="muito-diariamente">Muito, diariamente</SelectItem>
+                      <SelectItem value="medio-semanalmente">Médio, semanalmente</SelectItem>
+                      <SelectItem value="pouco-mensalmente">Pouco, mensalmente</SelectItem>
+                      <SelectItem value="nao-uso-muito">Não uso muito</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="sentiuEnganado"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Já se sentiu enganado ou perdeu dinheiro por uma indicação ruim de investimentos?</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="sim">Sim</SelectItem>
+                      <SelectItem value="nao">Não</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
