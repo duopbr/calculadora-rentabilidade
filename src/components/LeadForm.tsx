@@ -43,9 +43,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       email: "",
       phone: "+55 ",
       patrimonio: "",
-      interesseDados: "",
       chatgpt: "",
-      sentiuEnganado: "",
     },
   });
 

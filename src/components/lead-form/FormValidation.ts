@@ -12,9 +12,7 @@ export const formSchema = z.object({
       return digits.length === 13; // +55 + 11 dígitos
     }, { message: "Telefone deve ter 11 dígitos." }),
   patrimonio: z.string().min(1, { message: "Patrimônio investido é obrigatório." }),
-  interesseDados: z.string().min(1, { message: "Por favor, selecione uma opção." }),
   chatgpt: z.string().min(1, { message: "Por favor, selecione uma opção." }),
-  sentiuEnganado: z.string().min(1, { message: "Por favor, selecione uma opção." }),
 });
 
 export type LeadCaptureFormValues = z.infer<typeof formSchema>;

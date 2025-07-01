@@ -109,29 +109,6 @@ export const FormFields: React.FC<FormFieldsProps> = ({ control, isSubmitting })
 
       <FormField
         control={control}
-        name="interesseDados"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Você tem interesse em dados e notícias de investimento?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione..." />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="sim-frequencia">Sim, vejo com frequência</SelectItem>
-                <SelectItem value="medio">Médio</SelectItem>
-                <SelectItem value="nao-muito-interesse">Não tenho muito interesse</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={control}
         name="chatgpt"
         render={({ field }) => (
           <FormItem>
@@ -147,28 +124,6 @@ export const FormFields: React.FC<FormFieldsProps> = ({ control, isSubmitting })
                 <SelectItem value="medio-semanalmente">Médio, semanalmente</SelectItem>
                 <SelectItem value="pouco-mensalmente">Pouco, mensalmente</SelectItem>
                 <SelectItem value="nao-uso-muito">Não uso muito</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={control}
-        name="sentiuEnganado"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Já se sentiu enganado ou perdeu dinheiro por uma indicação ruim de investimentos?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione..." />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="sim">Sim</SelectItem>
-                <SelectItem value="nao">Não</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />

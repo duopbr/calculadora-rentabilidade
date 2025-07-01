@@ -21,9 +21,7 @@ export const submitFormData = async (values: LeadCaptureFormValues, source: stri
     phone: phoneFormatted,
     patrimonio: values.patrimonio,
     calculadora: source,
-    "Interesse em dados": values.interesseDados,
-    "Chatgpt": values.chatgpt,
-    "Se sentiu enganado": values.sentiuEnganado
+    "Chatgpt": values.chatgpt
   });
   
   // Inserir dados no Supabase
@@ -35,9 +33,7 @@ export const submitFormData = async (values: LeadCaptureFormValues, source: stri
       phone: phoneFormatted,
       patrimonio: values.patrimonio,
       calculadora: source,
-      "Interesse em dados": values.interesseDados,
-      "Chatgpt": values.chatgpt,
-      "Se sentiu enganado": values.sentiuEnganado
+      "Chatgpt": values.chatgpt
     });
 
   if (supabaseError) {
@@ -62,9 +58,7 @@ export const submitFormData = async (values: LeadCaptureFormValues, source: stri
           phone: values.phone,
           patrimonio: values.patrimonio,
           source,
-          interesseDados: values.interesseDados,
           chatgpt: values.chatgpt,
-          sentiuEnganado: values.sentiuEnganado,
         }),
       });
     } catch (googleError) {
