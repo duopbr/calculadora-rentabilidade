@@ -12,44 +12,53 @@ export type Database = {
       Calculadoras: {
         Row: {
           calculadora: string | null
+          Chatgpt: string | null
           Contato: string | null
           created_at: string
           email: string | null
           id: number
+          "Interesse em dados": string | null
           "Média de Mensagens por Conversas": string | null
           Name: string | null
           Nota: string | null
           "Numero de Conversas": string | null
           patrimonio: string | null
           phone: string | null
+          "Se sentiu enganado": string | null
           valor_mes: string | null
         }
         Insert: {
           calculadora?: string | null
+          Chatgpt?: string | null
           Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Interesse em dados"?: string | null
           "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
           Nota?: string | null
           "Numero de Conversas"?: string | null
           patrimonio?: string | null
           phone?: string | null
+          "Se sentiu enganado"?: string | null
           valor_mes?: string | null
         }
         Update: {
           calculadora?: string | null
+          Chatgpt?: string | null
           Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Interesse em dados"?: string | null
           "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
           Nota?: string | null
           "Numero de Conversas"?: string | null
           patrimonio?: string | null
           phone?: string | null
+          "Se sentiu enganado"?: string | null
           valor_mes?: string | null
         }
         Relationships: []
