@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Calculator from '@/components/Calculator';
 import { Check, DollarSign, SlidersHorizontal, BarChart2 } from 'lucide-react';
@@ -80,9 +81,79 @@ const Index = () => {
           {/* Calculator Component - Unchanged */}
           <Calculator />
 
-          {/* Educational Content Section - NEW CONTENT BELOW CALCULATOR */}
+          {/* Educational Content Section - NEW CDI CONTENT */}
           <section className="mt-16 max-w-4xl mx-auto">
             <article className="prose prose-lg max-w-none">
+              <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-6">
+                Entenda Mais Sobre o CDI
+              </h2>
+              
+              <div className="text-gray-700 leading-relaxed space-y-4 mb-8">
+                <p>
+                  A taxa CDI (Certificado de Depósito Interbancário) é um dos principais indicadores do mercado financeiro brasileiro. 
+                  Ela representa a taxa de juros que os bancos cobram para emprestar dinheiro entre si em operações de curtíssimo prazo. 
+                  Por estar muito próxima da taxa básica de juros, a Selic, o CDI se tornou a principal referência de rentabilidade 
+                  para a maioria dos investimentos de renda fixa, como CDBs, LCIs, LCAs e fundos de investimento.
+                </p>
+                
+                <p>
+                  Acompanhar a taxa CDI é fundamental para qualquer investidor. Quando você investe em um produto que paga "100% do CDI", 
+                  significa que sua rentabilidade será igual à variação dessa taxa no período. Utilizar uma calculadora de rendimento CDI 
+                  como a nossa permite que você visualize o potencial de crescimento do seu dinheiro e compare diferentes cenários, 
+                  facilitando a tomada de decisões financeiras mais inteligentes e alinhadas aos seus objetivos.
+                </p>
+              </div>
+
+              <h3 className="text-xl font-semibold text-calculator-blue-dark mb-4">
+                Perguntas Frequentes (FAQ)
+              </h3>
+              
+              <div className="space-y-6 mb-12">
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h4 className="text-lg font-medium text-calculator-blue-dark mb-3">
+                    Como calcular o rendimento do CDI mensal?
+                  </h4>
+                  <p className="text-gray-700">
+                    Para ter uma estimativa do rendimento mensal, você precisa converter a taxa CDI anual para uma taxa mensal. 
+                    Não basta dividir por 12, pois isso ignora os juros compostos. A forma correta é usar a fórmula de equivalência de taxas. 
+                    Nossa calculadora de investimento CDI já faz esse cálculo complexo para você automaticamente.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h4 className="text-lg font-medium text-calculator-blue-dark mb-3">
+                    Qual a diferença entre a taxa CDI e a taxa Selic?
+                  </h4>
+                  <p className="text-gray-700">
+                    A Selic é a taxa básica de juros da economia, definida pelo Banco Central. O CDI é uma taxa privada, 
+                    praticada entre os bancos. Embora sejam diferentes, seus valores andam sempre muito próximos, 
+                    com o CDI geralmente ficando um pouco abaixo da Selic. Ambas são referências para a renda fixa.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h4 className="text-lg font-medium text-calculator-blue-dark mb-3">
+                    Este simulador de rendimentos considera os impostos?
+                  </h4>
+                  <p className="text-gray-700">
+                    Sim! Nossa calculadora já faz uma estimativa do Imposto de Renda (IR) regressivo sobre os rendimentos, 
+                    fornecendo um resultado líquido para sua projeção. A alíquota de imposto diminui conforme o tempo de investimento aumenta, 
+                    e nosso simulador leva isso em conta para oferecer um valor final mais próximo da realidade.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-calculator-blue pl-6">
+                  <h4 className="text-lg font-medium text-calculator-blue-dark mb-3">
+                    O que significa um investimento que rende 100% do CDI?
+                  </h4>
+                  <p className="text-gray-700">
+                    Significa que a rentabilidade do seu investimento será exatamente igual à variação da taxa CDI no período. 
+                    Se o CDI rendeu 10% em um ano, seu dinheiro também renderá 10% (bruto). Muitos CDBs de grandes bancos e contas 
+                    digitais oferecem essa rentabilidade como um padrão seguro e popular no mercado.
+                  </p>
+                </div>
+              </div>
+
               <h2 className="text-2xl font-semibold text-calculator-blue-dark mb-6">
                 Entendendo os Juros Compostos: A Bola de Neve do seu Dinheiro
               </h2>
