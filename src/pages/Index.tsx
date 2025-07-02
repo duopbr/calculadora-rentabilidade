@@ -15,6 +15,7 @@ const Index = () => {
             width="192"
             height="48"
             fetchPriority="high"
+            loading="eager"
           />
         </div>
       </header>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { 
   LineChart, 
   Line, 
@@ -17,6 +17,7 @@ interface LongTermChartProps {
   years: number;
 }
 
+// Memoized formatter
 const formatCurrency = (value: number) => {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
@@ -26,7 +27,8 @@ const formatCurrency = (value: number) => {
   });
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+// Memoized tooltip component
+const CustomTooltip = React.memo(({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
@@ -44,11 +46,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
   }
   return null;
-};
+});
 
-const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate, years }) => {
-  // Generate data points for each year
-  const generateChartData = () => {
+CustomTooltip.displayName = 'CustomTooltip';
+
+const LongTermChart: React.FC<LongTermChartProps> = React.memo(({ initialValue, annualRate, years }) => {
+  // Memoize chart data generation
+  const chartData = useMemo(() => {
     const data = [];
     
     for (let year = 0; year <= years; year++) {
@@ -63,11 +67,18 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
     }
     
     return data;
-  };
+  }, [initialValue, annualRate, years]);
 
-  const chartData = generateChartData();
-  const finalValue = chartData[chartData.length - 1]?.valorTotal || 0;
-  const totalInterest = finalValue - initialValue;
+  // Memoize summary calculations
+  const summaryData = useMemo(() => {
+    const finalValue = chartData[chartData.length - 1]?.valorTotal || 0;
+    const totalInterest = finalValue - initialValue;
+    
+    return {
+      finalValue,
+      totalInterest
+    };
+  }, [chartData, initialValue]);
 
   return (
     <div className="mt-8 animate-fade-up">
@@ -75,7 +86,7 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total final</p>
-          <p className="font-bold text-sm sm:text-lg md:text-xl text-calculator-gray-dark break-all hyphens-auto overflow-hidden">{formatCurrency(finalValue)}</p>
+          <p className="font-bold text-sm sm:text-lg md:text-xl text-calculator-gray-dark break-all hyphens-auto overflow-hidden">{formatCurrency(summaryData.finalValue)}</p>
         </div>
         <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Valor total investido</p>
@@ -83,7 +94,7 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
         </div>
         <div className="text-center p-3 bg-calculator-gray rounded-md min-h-[80px] flex flex-col justify-center">
           <p className="text-xs sm:text-sm text-gray-600 mb-1 leading-tight">Total em juros</p>
-          <p className="font-bold text-sm sm:text-lg md:text-xl text-green-600 break-all hyphens-auto overflow-hidden">{formatCurrency(totalInterest)}</p>
+          <p className="font-bold text-sm sm:text-lg md:text-xl text-green-600 break-all hyphens-auto overflow-hidden">{formatCurrency(summaryData.totalInterest)}</p>
         </div>
       </div>
 
@@ -140,6 +151,8 @@ const LongTermChart: React.FC<LongTermChartProps> = ({ initialValue, annualRate,
       </div>
     </div>
   );
-};
+});
+
+LongTermChart.displayName = 'LongTermChart';
 
 export default LongTermChart;

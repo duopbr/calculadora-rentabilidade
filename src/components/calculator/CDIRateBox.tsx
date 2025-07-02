@@ -1,6 +1,6 @@
-import React from 'react';
+
+import React, { useMemo, useCallback } from 'react';
 import { Input } from '@/components/ui/input';
-import { CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 
 interface CDIRateBoxProps {
   title: string;
@@ -9,22 +9,30 @@ interface CDIRateBoxProps {
   onRateChange: (value: number) => void;
 }
 
-const CDIRateBox: React.FC<CDIRateBoxProps> = ({
+const CDIRateBox: React.FC<CDIRateBoxProps> = React.memo(({
   title,
   icon,
   rate,
   onRateChange,
 }) => {
-  const handleCDIChange = (value: string) => {
+  // Memoize change handler to prevent recreation
+  const handleCDIChange = useCallback((value: string) => {
     const numericValue = parseFloat(value);
     if (!isNaN(numericValue) && numericValue >= 0) {
       onRateChange(numericValue);
     }
-  };
+  }, [onRateChange]);
 
-  // Cálculo da taxa mensal com juros compostos
-  const monthlyRateBruto = (Math.pow(1 + rate/100, 1/12) - 1) * 100;
-  const monthlyRateLiquido = monthlyRateBruto * 0.85;
+  // Memoize monthly rate calculations
+  const monthlyRates = useMemo(() => {
+    const monthlyRateBruto = (Math.pow(1 + rate/100, 1/12) - 1) * 100;
+    const monthlyRateLiquido = monthlyRateBruto * 0.85;
+    
+    return {
+      bruto: monthlyRateBruto.toFixed(3).replace('.', ','),
+      liquido: monthlyRateLiquido.toFixed(3).replace('.', ',')
+    };
+  }, [rate]);
 
   return (
     <div className="calculator-rate-box">
@@ -48,19 +56,21 @@ const CDIRateBox: React.FC<CDIRateBoxProps> = ({
       <div className="grid grid-cols-2 gap-4 mt-4">
         <div className="month-box">
           <div className="value">
-            {monthlyRateBruto.toFixed(3).replace('.', ',')}%
+            {monthlyRates.bruto}%
           </div>
           <div className="label">Mês Bruto</div>
         </div>
         <div className="month-box">
           <div className="value">
-            {monthlyRateLiquido.toFixed(3).replace('.', ',')}%
+            {monthlyRates.liquido}%
           </div>
           <div className="label">Mês Líquido</div>
         </div>
       </div>
     </div>
   );
-};
+});
+
+CDIRateBox.displayName = 'CDIRateBox';
 
 export default CDIRateBox;

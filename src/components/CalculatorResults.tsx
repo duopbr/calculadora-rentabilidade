@@ -1,6 +1,8 @@
 
-import React from 'react';
-import ResultChart from './ResultChart';
+import React, { useMemo } from 'react';
+
+// Lazy load o gráfico pesado
+const ResultChart = React.lazy(() => import('./ResultChart'));
 
 interface CalculatorResultsProps {
   patrimony: number;
@@ -21,7 +23,7 @@ interface CalculatorResultsProps {
   };
 }
 
-const CalculatorResults: React.FC<CalculatorResultsProps> = ({
+const CalculatorResults: React.FC<CalculatorResultsProps> = React.memo(({
   patrimony,
   currentCDI,
   pastCDI,
@@ -44,8 +46,8 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
     return roundedValue.toFixed(2).replace('.', ',') + '%';
   };
 
-  // Prepare data for the chart with rounded values
-  const chartData = [
+  // Memoize chart data to prevent recalculation
+  const chartData = useMemo(() => [
     { 
       name: 'CDI Atual', 
       value: Math.round(currentCDI.netMonthly * 100) / 100, 
@@ -61,7 +63,7 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
       value: Math.round(futureCDI.netMonthly * 100) / 100, 
       color: '#10b981' 
     }
-  ];
+  ], [currentCDI.netMonthly, pastCDI.netMonthly, futureCDI.netMonthly]);
 
   return (
     <div className="mt-8 animate-fade-up">
@@ -75,7 +77,9 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
         </div>
       </div>
 
-      <ResultChart data={chartData} />
+      <React.Suspense fallback={<div className="h-[300px] bg-gray-100 animate-pulse rounded-md"></div>}>
+        <ResultChart data={chartData} />
+      </React.Suspense>
 
       <div className="grid grid-cols-3 gap-4 mt-8">
         <div className="text-center p-4 bg-calculator-gray rounded-md animate-scale-in" style={{animationDelay: '0.1s'}}>
@@ -93,6 +97,8 @@ const CalculatorResults: React.FC<CalculatorResultsProps> = ({
       </div>
     </div>
   );
-};
+});
+
+CalculatorResults.displayName = 'CalculatorResults';
 
 export default CalculatorResults;

@@ -8,7 +8,7 @@ interface CalculatorActionsProps {
   isLoading: boolean;
 }
 
-const CalculatorActions: React.FC<CalculatorActionsProps> = ({
+const CalculatorActions: React.FC<CalculatorActionsProps> = React.memo(({
   onCalculate,
   onClear,
   isLoading,
@@ -18,6 +18,7 @@ const CalculatorActions: React.FC<CalculatorActionsProps> = ({
       <button 
         onClick={onClear}
         className="calculator-button secondary flex-1"
+        type="button"
       >
         Limpar
       </button>
@@ -25,6 +26,7 @@ const CalculatorActions: React.FC<CalculatorActionsProps> = ({
         onClick={onCalculate}
         className="calculator-button primary flex-1"
         disabled={isLoading}
+        type="button"
       >
         {isLoading ? (
           <span className="flex items-center justify-center">
@@ -35,6 +37,8 @@ const CalculatorActions: React.FC<CalculatorActionsProps> = ({
       </button>
     </div>
   );
-};
+});
+
+CalculatorActions.displayName = 'CalculatorActions';
 
 export default CalculatorActions;

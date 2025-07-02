@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { 
   BarChart, 
   Bar, 
@@ -23,7 +23,7 @@ interface ResultChartProps {
   data: ChartDataItem[];
 }
 
-// Formatador para os valores no eixo Y (em reais)
+// Memoize formatters to prevent recreation
 const formatCurrency = (value: number) => {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
@@ -32,8 +32,8 @@ const formatCurrency = (value: number) => {
   });
 };
 
-// Componente de tooltip personalizado
-const CustomTooltip = ({ active, payload, label }: any) => {
+// Memoized tooltip component
+const CustomTooltip = React.memo(({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
@@ -47,12 +47,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   }
 
   return null;
-};
+});
 
-const ResultChart: React.FC<ResultChartProps> = ({ data }) => {
-  // Calculate dynamic Y-axis maximum (10-15% higher than the tallest bar)
-  const maxValue = Math.max(...data.map(item => item.value));
-  const yAxisMax = maxValue * 1.15; // 15% higher than the tallest bar
+CustomTooltip.displayName = 'CustomTooltip';
+
+const ResultChart: React.FC<ResultChartProps> = React.memo(({ data }) => {
+  // Memoize dynamic Y-axis maximum calculation
+  const yAxisMax = useMemo(() => {
+    const maxValue = Math.max(...data.map(item => item.value));
+    return maxValue * 1.15; // 15% higher than the tallest bar
+  }, [data]);
 
   return (
     <div className="w-full h-[300px] mt-4 animate-fade-up">
@@ -94,6 +98,8 @@ const ResultChart: React.FC<ResultChartProps> = ({ data }) => {
       </ResponsiveContainer>
     </div>
   );
-};
+});
+
+ResultChart.displayName = 'ResultChart';
 
 export default ResultChart;
