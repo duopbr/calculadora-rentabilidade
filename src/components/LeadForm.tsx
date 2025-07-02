@@ -1,6 +1,9 @@
-import React, { useState, memo } from 'react';
+
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,25 +14,55 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-import { formSchema, LeadCaptureFormValues } from './lead-form/FormValidation';
-import { FormFields } from './lead-form/FormFields';
-import { submitFormData } from './lead-form/DataSubmission';
-import { PrivacyNotice } from './lead-form/PrivacyNotice';
+// ✅ URL única para todas as calculadoras
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEOHIP-UCX_nHRD0_jsTY9YncsWhCENXFl_sxcxmQdRJR6Bq5g0z5LfA66JEyfpybREA/exec';
+
+// Adicionar interface para o dataLayer do Google Tag Manager na window
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
+const formSchema = z.object({
+  name: z.string().min(1, { message: "Nome é obrigatório." }),
+  email: z.string().email({ message: "Por favor, insira um email válido." }),
+  phone: z.string()
+    .min(1, { message: "Telefone é obrigatório." })
+    .regex(/^\+55 \(\d{2}\) \d{5}-\d{4}$/, { message: "Formato inválido. Use: +55 (XX) XXXXX-XXXX" })
+    .refine((phone) => {
+      const digits = phone.replace(/\D/g, '');
+      return digits.length === 13; // +55 + 11 dígitos
+    }, { message: "Telefone deve ter 11 dígitos." }),
+  patrimonio: z.string().min(1, { message: "Patrimônio investido é obrigatório." }),
+  valorMensal: z.string().min(1, { message: "Valor mensal é obrigatório." }),
+});
+
+type LeadCaptureFormValues = z.infer<typeof formSchema>;
 
 interface LeadCaptureFormProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  source: string;
-<<<<<<< Updated upstream
+  source: string; // ✅ Nome da aba da planilha
   onSubmitSuccess: () => void;
-}
-
-export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
-=======
-  onSubmitSuccess?: () => void;
 }
 
 // Função para aplicar máscara no telefone
@@ -47,8 +80,7 @@ const formatPhoneNumber = (value: string) => {
   return `+55 (${cleanNumbers.slice(0, 2)}) ${cleanNumbers.slice(2, 7)}-${cleanNumbers.slice(7, 11)}`;
 };
 
-export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
->>>>>>> Stashed changes
+export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   isOpen,
   onOpenChange,
   source,
@@ -64,16 +96,18 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
       email: "",
       phone: "+55 ",
       patrimonio: "",
-      chatgpt: "",
+      valorMensal: "",
     },
   });
+
+  const handlePhoneChange = (value: string, onChange: (value: string) => void) => {
+    const formatted = formatPhoneNumber(value);
+    onChange(formatted);
+  };
 
   async function onSubmit(values: LeadCaptureFormValues) {
     setIsSubmitting(true);
     try {
-<<<<<<< Updated upstream
-      await submitFormData(values, source);
-=======
       // Extrair apenas os números do telefone para salvar no banco
       const phoneNumbers = values.phone.replace(/\D/g, '');
       
@@ -108,66 +142,65 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
         return;
       }
 
-      // Se chegou até aqui, o Supabase deu certo
-      console.log('✅ Dados salvos no Supabase com sucesso');
+      console.log('Dados salvos no Supabase com sucesso!');
 
-      // Agora enviar para o Google Sheets como backup
-      try {
-        const googleData = {
-          name: values.name,
-          email: values.email,
-          phone: values.phone, // Enviando com a máscara para o Google Sheets
-          patrimonio: values.patrimonio,
-          valorMensal: values.valorMensal,
-          source: source,
-          timestamp: new Date().toISOString()
-        };
-
-        console.log('Enviando para Google Sheets:', googleData);
-
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors', // Importante para evitar CORS
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(googleData)
-        });
-
-        console.log('✅ Dados enviados para Google Sheets');
-      } catch (googleError) {
-        console.warn('⚠️ Erro ao enviar para Google Sheets (não crítico):', googleError);
-        // Não falha a operação se o Google Sheets der erro
+      // Continuar enviando para Google Sheets se necessário
+      if (GOOGLE_SCRIPT_URL) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: values.name,
+              email: values.email,
+              phone: values.phone,
+              patrimonio: values.patrimonio,
+              valorMensal: values.valorMensal,
+              source, // ✅ Envia nome da aba
+            }),
+          });
+        } catch (googleError) {
+          console.warn('Erro ao enviar para Google Sheets:', googleError);
+          // Não bloqueia o fluxo se o Google Sheets falhar
+        }
       }
 
-      // Enviar evento para Google Tag Manager
-      if (typeof window !== 'undefined' && window.dataLayer) {
+      // Enviar dados para o dataLayer do GTM
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-          event: 'lead_capture',
-          lead_source: source,
-          form_name: 'calculadora_rentabilidade'
+          event: 'lead_capture_success',
+          user_data: {
+            em: values.email,
+            ph: values.phone,
+          }
+        });
+        
+        // Log para debug (remover em produção se necessário)
+        console.log('Dados enviados para o dataLayer:', {
+          event: 'lead_capture_success',
+          user_data: {
+            em: values.email,
+            ph: values.phone,
+          }
         });
       }
->>>>>>> Stashed changes
 
       toast({
-        title: "Sucesso!",
-        description: "Seus dados foram enviados. Agora você pode ver os resultados da calculadora.",
+        title: "Obrigado!",
+        description: "Seus dados foram enviados com sucesso.",
       });
-
-      // Reset form
+      onSubmitSuccess();
       form.reset();
-      
-      // Call success callback
-      if (onSubmitSuccess) {
-        onSubmitSuccess();
-      }
-
+      onOpenChange(false);
     } catch (error) {
       console.error('Erro geral:', error);
       toast({
         title: "Erro",
-        description: "Ocorreu um erro inesperado. Tente novamente.",
+        description: `Não foi possível enviar seus dados. (${error instanceof Error ? error.message : String(error)})`,
         variant: "destructive",
       });
     } finally {
@@ -176,93 +209,66 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
   }
 
   return (
-<<<<<<< Updated upstream
     <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && onOpenChange(open)}>
       <DialogContent
-        className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto"
+        className="sm:max-w-[425px]"
         onInteractOutside={(e) => isSubmitting && e.preventDefault()}
         onEscapeKeyDown={(e) => isSubmitting && e.preventDefault()}
       >
-=======
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
->>>>>>> Stashed changes
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-calculator-blue-dark">
-            📊 Acesse os Resultados da Calculadora
-          </DialogTitle>
-          <DialogDescription className="text-gray-600">
-            Para visualizar os resultados detalhados e receber análises personalizadas dos seus investimentos, 
-            preencha as informações abaixo. É rápido e seus dados estão protegidos.
+          <DialogTitle>Só mais um passo!</DialogTitle>
+          <DialogDescription>
+            Para ver o resultado, por favor, deixe suas informações. Prometemos não enviar spam!
           </DialogDescription>
         </DialogHeader>
-        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-<<<<<<< Updated upstream
-            <FormFields control={form.control} isSubmitting={isSubmitting} />
-            <PrivacyNotice />
-            <DialogFooter>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Enviando..." : "Ver Resultado e Salvar"}
-=======
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome completo *</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Digite seu nome completo" 
-                      {...field} 
-                      disabled={isSubmitting}
-                    />
+                    <Input placeholder="Seu nome" {...field} disabled={isSubmitting} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-mail *</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="email" 
-                      placeholder="seu.email@exemplo.com" 
-                      {...field} 
-                      disabled={isSubmitting}
-                    />
+                    <Input type="email" placeholder="seu@email.com" {...field} disabled={isSubmitting} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Telefone/WhatsApp *</FormLabel>
+                  <FormLabel>Celular</FormLabel>
                   <FormControl>
                     <Input 
                       type="tel" 
                       placeholder="+55 (XX) XXXXX-XXXX" 
-                      value={field.value}
+                      {...field}
                       onChange={(e) => handlePhoneChange(e.target.value, field.onChange)}
                       disabled={isSubmitting}
+                      maxLength={19}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="patrimonio"
@@ -288,7 +294,6 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="valorMensal"
@@ -323,22 +328,9 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
               Não compartilhamos seus dados com terceiros.
             </div>
 
-            <DialogFooter className="gap-2">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => onOpenChange(false)}
-                disabled={isSubmitting}
-              >
-                Cancelar
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="bg-calculator-blue hover:bg-calculator-blue-dark"
-              >
-                {isSubmitting ? "Processando..." : "🚀 Ver Resultados"}
->>>>>>> Stashed changes
+            <DialogFooter>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Enviando..." : "Ver Resultado e Salvar"}
               </Button>
             </DialogFooter>
           </form>
@@ -346,6 +338,4 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = memo(({
       </DialogContent>
     </Dialog>
   );
-});
-
-LeadCaptureForm.displayName = 'LeadCaptureForm';
+};

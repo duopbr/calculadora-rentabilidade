@@ -1,10 +1,8 @@
-import React, { memo } from 'react';
+import React from 'react';
 import CalculatorContainer from './calculator/CalculatorContainer';
 
-const Calculator = memo(() => {
+const Calculator = () => {
   return <CalculatorContainer />;
-});
-
-Calculator.displayName = 'Calculator';
+};
 
 export default Calculator;
