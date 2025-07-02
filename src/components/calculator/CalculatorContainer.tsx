@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
@@ -86,7 +87,7 @@ const CalculatorContainer = () => {
     <div className="max-w-5xl mx-auto px-4 py-6">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-calculator-gray-dark">
-          Calculadora de Rendimento CDI
+          Calculadora
         </h1>
         <h2 className="text-xl text-calculator-blue font-medium">
           Rentabilidade Mensal

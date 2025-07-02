@@ -4,7 +4,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<<<<<< Updated upstream
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -69,86 +68,6 @@
         }
       ]
     }
-=======
-    
-    <!-- Performance optimizations -->
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#4f46e5" />
-    
-    <!-- DNS Prefetch and Preconnect for external resources -->
-    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- SEO Tags -->
-    <title>Calculadora CDI: Simule o Rendimento do seu Investimento</title>
-    <meta name="description" content="Simule o rendimento do seu dinheiro com a nossa calculadora de CDI. Insira o valor e a taxa para calcular e comparar seus investimentos de forma fácil e rápida." />
-    <meta name="author" content="Duop" />
-    <meta name="keywords" content="calculadora cdi, calculadora rendimento cdi, simulador de rendimentos, calcular cdi mensal, calculadora investimento cdi" />
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="Calculadora CDI: Simule o Rendimento do seu Investimento" />
-    <meta property="og:description" content="Simule o rendimento do seu dinheiro com a nossa calculadora de CDI. Insira o valor e a taxa para calcular e comparar seus investimentos de forma fácil e rápida." />
-    <meta property="og:image" content="/lovable-uploads/781c78da-697c-4cc6-860b-9119b89904ba.webp" />
-    <meta property="og:type" content="website" />
-    
-    <!-- Icons and Images -->
-    <link rel="icon" href="/lovable-uploads/781c78da-697c-4cc6-860b-9119b89904ba.webp" type="image/webp">
-    <link rel="preload" href="/lovable-uploads/81cabb12-e425-469b-be89-7110bca0ebfb.webp" as="image" fetchpriority="high">
-    
-    <!-- Critical CSS inline to prevent render blocking -->
-    <style>
-      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
-      .loading { display: flex; justify-content: center; align-items: center; height: 100vh; }
-    </style>
-    
-    <!-- Google Tag Manager - Optimized for performance and tracking accuracy -->
-    <script>
-      // Initialize dataLayer before GTM loads
-      window.dataLayer = window.dataLayer || [];
-      
-      // GTM optimized loader with error handling
-      (function(w,d,s,l,i){
-        try {
-          w[l]=w[l]||[];
-          w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-          var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),
-              dl=l!='dataLayer'?'&l='+l:'';
-          
-          j.async=true;
-          j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-          j.onerror = function() {
-            console.warn('GTM loading failed, but tracking will continue via dataLayer');
-          };
-          
-          f.parentNode.insertBefore(j,f);
-          
-          // Tracking verification helper
-          window.gtmLoaded = false;
-          j.onload = function() {
-            window.gtmLoaded = true;
-            console.log('GTM loaded successfully');
-          };
-          
-        } catch(e) {
-          console.warn('GTM initialization error:', e);
-        }
-      })(window,document,'script','dataLayer','GTM-P5MWJSXM');
-      
-      // Helper function to ensure tracking works
-      window.trackEvent = function(eventName, eventParams) {
-        if (window.dataLayer) {
-          window.dataLayer.push({
-            event: eventName,
-            ...eventParams,
-            timestamp: new Date().getTime()
-          });
-        }
-      };
->>>>>>> Stashed changes
     </script>
   </head>
 
@@ -157,16 +76,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P5MWJSXM"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
-    <div id="root">
-      <!-- Loading fallback for better perceived performance -->
-      <div class="loading">
-        <div>Carregando...</div>
-      </div>
-    </div>
-    
-    <!-- Main script with module preload for better performance -->
-    <link rel="modulepreload" href="/src/main.tsx" />
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
