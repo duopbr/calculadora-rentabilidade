@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Control } from 'react-hook-form';
 import {
@@ -123,7 +122,7 @@ export const FormFields: React.FC<FormFieldsProps> = ({ control, isSubmitting })
                 <SelectItem value="muito-diariamente">Muito, diariamente</SelectItem>
                 <SelectItem value="medio-semanalmente">Médio, semanalmente</SelectItem>
                 <SelectItem value="pouco-mensalmente">Pouco, mensalmente</SelectItem>
-                <SelectItem value="nao-uso-muito">Não uso muito</SelectItem>
+                <SelectItem value="nao-uso">Não uso</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />
