@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
@@ -19,20 +18,20 @@ const CalculatorContainer = () => {
   const [showLeadForm, setShowLeadForm] = useState<boolean>(true);
   const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
-  // CDI Rates with default values
-  const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.65);
-  const [pastCDIRate, setPastCDIRate] = useState<number>(11.92);
-  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.64);
+  // CDI Rates with updated default values
+  const [currentCDIRate, setCurrentCDIRate] = useState<number>(14.9);
+  const [pastCDIRate, setPastCDIRate] = useState<number>(12.1);
+  const [futureCDIRate, setFutureCDIRate] = useState<number>(14.60);
 
   // Reset calculator
   const handleClear = () => {
     setPatrimony('');
     setYears('10');
     setHasCalculated(false);
-    // Reset CDI rates to default values
-    setCurrentCDIRate(14.65);
-    setPastCDIRate(11.92);
-    setFutureCDIRate(14.64);
+    // Reset CDI rates to updated default values
+    setCurrentCDIRate(14.9);
+    setPastCDIRate(12.1);
+    setFutureCDIRate(14.60);
   };
 
   // Calculate results after lead capture
