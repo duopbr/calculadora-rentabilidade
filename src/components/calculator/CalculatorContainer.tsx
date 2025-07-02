@@ -1,19 +1,21 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalculatorIcon, RefreshCw, TrendingUp } from 'lucide-react';
 import CalculatorInput from '../CalculatorInput';
 import CalculatorResults from '../CalculatorResults';
+import LongTermChart from '../LongTermChart';
 import { toast } from '@/components/ui/use-toast';
 import { LeadCaptureForm } from '../LeadForm';
 import CDIRateBox from './CDIRateBox';
 import CalculatorActions from './CalculatorActions';
 import { calculateMonthlyIncome } from '@/utils/calculatorUtils';
+import { Input } from '@/components/ui/input';
 
 const CalculatorContainer = () => {
   const [patrimony, setPatrimony] = useState<string>('');
+  const [years, setYears] = useState<string>('10');
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showLeadForm, setShowLeadForm] = useState<boolean>(true); // Mudança aqui: inicia como true
+  const [showLeadForm, setShowLeadForm] = useState<boolean>(true);
   const [leadCaptured, setLeadCaptured] = useState<boolean>(false);
 
   // CDI Rates with default values
@@ -24,6 +26,7 @@ const CalculatorContainer = () => {
   // Reset calculator
   const handleClear = () => {
     setPatrimony('');
+    setYears('10');
     setHasCalculated(false);
     // Reset CDI rates to default values
     setCurrentCDIRate(14.65);
@@ -72,6 +75,7 @@ const CalculatorContainer = () => {
 
   // Convert string to number
   const patrimonyAsNumber = parseInt(patrimony) / 100 || 0;
+  const yearsAsNumber = parseInt(years) || 10;
 
   // Calculate results for all three CDI rates
   const currentCDIResult = calculateMonthlyIncome(patrimonyAsNumber, currentCDIRate);
@@ -82,7 +86,7 @@ const CalculatorContainer = () => {
     <div className="max-w-5xl mx-auto px-4 py-6">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-calculator-gray-dark">
-          Calculadora
+          Calculadora de Rendimento CDI
         </h1>
         <h2 className="text-xl text-calculator-blue font-medium">
           Rentabilidade Mensal
@@ -111,13 +115,32 @@ const CalculatorContainer = () => {
           onRateChange={setFutureCDIRate}
         />
 
-        <div className="mb-6">
-          <CalculatorInput 
-            value={patrimony} 
-            onChange={setPatrimony} 
-            onClear={handleClear}
-            placeholder="Digite o valor do seu patrimônio" 
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 items-end">
+          <div className="flex flex-col">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Valor do patrimônio
+            </label>
+            <CalculatorInput 
+              value={patrimony} 
+              onChange={setPatrimony} 
+              onClear={handleClear}
+              placeholder="Digite o valor do seu patrimônio" 
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Período (em anos)
+            </label>
+            <Input
+              type="number"
+              value={years}
+              onChange={(e) => setYears(e.target.value)}
+              placeholder="10"
+              min="1"
+              max="50"
+              className="h-12 text-lg"
+            />
+          </div>
         </div>
 
         <CalculatorActions
@@ -135,6 +158,18 @@ const CalculatorContainer = () => {
             pastCDI={pastCDIResult}
             futureCDI={futureCDIResult}
           />
+          
+          {/* Long-term projection section */}
+          <div className="mt-12">
+            <h3 className="text-2xl font-semibold text-calculator-blue-dark mb-6">
+              Projeção de Crescimento do Patrimônio
+            </h3>
+            <LongTermChart 
+              initialValue={patrimonyAsNumber}
+              annualRate={futureCDIRate}
+              years={yearsAsNumber}
+            />
+          </div>
         </div>
       )}
 
