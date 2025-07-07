@@ -1,6 +1,6 @@
-
 import React from 'react';
 import Calculator from '@/components/Calculator';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import { Check, DollarSign, SlidersHorizontal, BarChart2 } from 'lucide-react';
 
 const Index = () => {
@@ -244,6 +244,8 @@ const Index = () => {
           <p>Calculadora de Rentabilidade Express &copy; {new Date().getFullYear()}</p>
         </div>
       </footer>
+      
+      <WhatsAppButton />
     </div>
   );
 };
