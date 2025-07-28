@@ -112,7 +112,7 @@ export const FormFields: React.FC<FormFieldsProps> = ({ control, isSubmitting })
         name="chatgpt"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Usa o ChatGPT?</FormLabel>
+            <FormLabel>Você teria interesse em uma IA de investimentos?</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
               <FormControl>
                 <SelectTrigger>
@@ -120,10 +120,8 @@ export const FormFields: React.FC<FormFieldsProps> = ({ control, isSubmitting })
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="muito-diariamente">Muito, diariamente</SelectItem>
-                <SelectItem value="medio-semanalmente">Médio, semanalmente</SelectItem>
-                <SelectItem value="pouco-mensalmente">Pouco, mensalmente</SelectItem>
-                <SelectItem value="nao-uso-muito">Não uso muito</SelectItem>
+                <SelectItem value="sim">Sim</SelectItem>
+                <SelectItem value="nao">Não</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />
