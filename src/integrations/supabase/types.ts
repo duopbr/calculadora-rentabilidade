@@ -17,32 +17,50 @@ export type Database = {
       assessores: {
         Row: {
           celular: string
+          Contatado: string | null
           created_at: string | null
           id: number
           nome: string
+          Respondeu: string | null
+          reunião_marcada: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          Venda: string | null
         }
         Insert: {
           celular: string
+          Contatado?: string | null
           created_at?: string | null
           id?: number
           nome: string
+          Respondeu?: string | null
+          reunião_marcada?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          Venda?: string | null
         }
         Update: {
           celular?: string
+          Contatado?: string | null
           created_at?: string | null
           id?: number
           nome?: string
+          Respondeu?: string | null
+          reunião_marcada?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          Venda?: string | null
         }
         Relationships: []
       }
       Calculadoras: {
         Row: {
           calculadora: string | null
-          Chatgpt: string | null
           Contato: string | null
           created_at: string
           email: string | null
           id: number
+          "Interessa na IA": string | null
           "Interesse em dados": string | null
           "Média de Mensagens por Conversas": string | null
           Name: string | null
@@ -55,11 +73,11 @@ export type Database = {
         }
         Insert: {
           calculadora?: string | null
-          Chatgpt?: string | null
           Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Interessa na IA"?: string | null
           "Interesse em dados"?: string | null
           "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
@@ -72,11 +90,11 @@ export type Database = {
         }
         Update: {
           calculadora?: string | null
-          Chatgpt?: string | null
           Contato?: string | null
           created_at?: string
           email?: string | null
           id?: number
+          "Interessa na IA"?: string | null
           "Interesse em dados"?: string | null
           "Média de Mensagens por Conversas"?: string | null
           Name?: string | null
