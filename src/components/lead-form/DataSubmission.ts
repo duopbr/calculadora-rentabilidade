@@ -21,7 +21,7 @@ export const submitFormData = async (values: LeadCaptureFormValues, source: stri
     phone: phoneFormatted,
     patrimonio: values.patrimonio,
     calculadora: source,
-    "Interessa na IA": values.chatgpt
+    "Interesse em IA": values.chatgpt
   });
   
   // Inserir dados no Supabase
@@ -33,7 +33,7 @@ export const submitFormData = async (values: LeadCaptureFormValues, source: stri
       phone: phoneFormatted,
       patrimonio: values.patrimonio,
       calculadora: source,
-      "Interessa na IA": values.chatgpt
+      "Interesse em IA": values.chatgpt
     });
 
   if (supabaseError) {
